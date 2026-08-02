@@ -16,7 +16,7 @@ public class BigGearWave : MonoBehaviour
     public void Wave()
     {
         Debug.Log("BigGear Wave!");
-        // Random Y position on game space
+        // Position on ground
         float xPos = 8f;
         float yPos = -3.33f;
 

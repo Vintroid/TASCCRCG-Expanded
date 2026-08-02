@@ -26,6 +26,7 @@ public class Wrench : MonoBehaviour
 
     void Update()
     {
+        // Enemy movement
         transform.position += new Vector3(-1f, 0f, 0f) * Time.deltaTime * 2f;
     }
 
@@ -49,6 +50,8 @@ public class Wrench : MonoBehaviour
     private void OnDestroyed()
     {
         gameManager.playerManager.AddScore(50);
+
+        // Powerups and other effects when destroyed
         gameManager.EnemyDown(this.gameObject);
         GameObject.Destroy(this.gameObject);
     }

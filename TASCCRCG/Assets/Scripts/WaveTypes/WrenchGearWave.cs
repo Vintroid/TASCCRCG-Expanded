@@ -25,7 +25,6 @@ public class WrenchGearWave : MonoBehaviour
         {
             if (i % 2 == 1)
             {
-                // Random Y position on game space
                 float xPos = 7.5f;
                 float yPos = 0f;
                 GameObject.Instantiate(gear, new Vector3(xPos, yPos, 0f), Quaternion.identity);

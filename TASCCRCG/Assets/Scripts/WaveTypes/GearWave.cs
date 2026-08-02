@@ -25,7 +25,6 @@ public class GearWave : MonoBehaviour
 
         for (int i = 0; i < gearNum; i++)
         {
-            // Random Y position on game space
             float xPos = 7.5f;
             float yPos = 0f;
 
