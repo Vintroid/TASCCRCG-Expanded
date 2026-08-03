@@ -6,11 +6,13 @@ public class BigGear : Enemy
 {
 
     // Enemy unique fields
+    [Header("Characteristics")]
     [SerializeField] int baseHealth = 5;
     [SerializeField] int baseScoreValue = 200;
     [SerializeField] float speed = 1f;
 
-    private float shootingTime = 0f; 
+    private float shootingTime = 0f;
+    private bool isShooting;
 
     // Prefabs
     [SerializeField] GameObject saw;
@@ -21,6 +23,7 @@ public class BigGear : Enemy
         base.Start();
         health = baseHealth + gameManager.difficulty;
         scoreValue = baseScoreValue;
+        isShooting = false;
     }
 
     // Update is called once per frame
@@ -34,7 +37,7 @@ public class BigGear : Enemy
         transform.position += Vector3.left * speed * Time.deltaTime;
 
         // Shooting
-        if (shootingTime >= 5f)
+        if (!isShooting & shootingTime >= 5f)
         {
             StartCoroutine(Shoot());
             shootingTime = 0f;
@@ -43,26 +46,21 @@ public class BigGear : Enemy
 
     IEnumerator Shoot()
     {
+        isShooting = true;
         for(int i=0; i<3; i++)
-        {
-            GameObject bulletNW = Instantiate(saw, transform.position, Quaternion.Euler(0, 0, 135));
-            bulletNW.GetComponent<EnemyBullet>().direction = new Vector3(-1, 1, 0).normalized;
-
-            GameObject bulletNE = Instantiate(saw, transform.position, Quaternion.Euler(0, 0, 45));
-            bulletNE.GetComponent<EnemyBullet>().direction = new Vector3(1, 1, 0).normalized;
-
-            GameObject bulletN = Instantiate(saw, transform.position, Quaternion.Euler(0, 0, 90));
-            bulletN.GetComponent<EnemyBullet>().direction = new Vector3(0, 1, 0).normalized;
-
-            GameObject bulletE = Instantiate(saw, transform.position, Quaternion.Euler(0, 0, 0));
-            bulletE.GetComponent<EnemyBullet>().direction = new Vector3(1, 0, 0).normalized;
-
-            GameObject bulletW = Instantiate(saw, transform.position, Quaternion.Euler(0, 0, 180));
-            bulletW.GetComponent<EnemyBullet>().direction = new Vector3(-1, 0, 0).normalized;
+        { 
+            // Radial pattern 0 to 180.
+            SpawnProjectile(saw,Vector3.left, 0);
+            SpawnProjectile(saw,Vector3.up + Vector3.left, 45);
+            SpawnProjectile(saw,Vector3.up, 90);
+            SpawnProjectile(saw, Vector3.up + Vector3.right, 135);
+            SpawnProjectile(saw, Vector3.right, 180);
 
             gameManager.playerManager.AddScore(75);
             yield return new WaitForSeconds(0.33f);
         }
+
+        isShooting = false;
         
 
     }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class Wrench : Enemy
 {
     // Enemy unique fields
+    [Header("Characteristics")]
     [SerializeField] int baseHealth = 2;
     [SerializeField] int baseScoreValue = 50;
     [SerializeField] float speed = 2f;

@@ -68,7 +68,6 @@ public class Enemy : MonoBehaviour
 
         isFlashing = false;
 
-
     }
 
     // Handling collision to avoid OnCollisionEnter2D and OnTriggerEnter2D to repeat code.
@@ -89,5 +88,12 @@ public class Enemy : MonoBehaviour
         HandleCollision(collision.gameObject);
     }
 
+    protected EnemyBullet SpawnProjectile(GameObject prefab, Vector3 direction, float angle)
+    {
+        EnemyBullet bullet = Instantiate(prefab, transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<EnemyBullet>();
+        bullet.Initialize(direction);
+
+        return bullet;
+    }
 
 }

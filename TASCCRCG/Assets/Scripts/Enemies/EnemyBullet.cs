@@ -1,16 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
     // Bullet fields
-    public Vector3 direction;
+    private Vector3 direction;
     [SerializeField] float bulletSpeed = 3f;
 
     void Update()
     {
         transform.position += direction * bulletSpeed * Time.deltaTime;
+    }
+
+    public void Initialize(Vector3 direction)
+    {
+        this.direction = direction.normalized;
     }
 
     // Keep BOTH OnTriggerEnter2D and OnCollisionEnter2D
