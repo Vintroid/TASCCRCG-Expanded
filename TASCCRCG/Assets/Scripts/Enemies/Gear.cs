@@ -7,11 +7,10 @@ public class Gear : Enemy
 {
     Animator animator;
 
-    // Enemy fields
+    // Enemy unique fields
     [SerializeField] int baseHealth = 3;
     [SerializeField] int baseScoreValue = 100;
-    // Amp Tested Default 0.5f to 3f.
-    [SerializeField] float minMoveAmp = 0.5f;
+    [SerializeField] float minMoveAmp = 0.5f; // Amp Tested Default 0.5f to 3f.
     [SerializeField] float maxMoveAmp = 3f;
 
     private float time = 0f;
@@ -35,6 +34,7 @@ public class Gear : Enemy
     {
         base.Start();
         health = baseHealth + gameManager.difficulty;
+        scoreValue = baseScoreValue;
 
         // Random amplitude
         amp = UnityEngine.Random.Range(minMoveAmp, maxMoveAmp);

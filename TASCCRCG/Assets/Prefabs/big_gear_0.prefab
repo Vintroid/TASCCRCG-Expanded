@@ -117,7 +117,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407386639029919473}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -148,7 +148,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a867b0c408974146b08e2657812231d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
+  baseHealth: 5
+  baseScoreValue: 200
+  speed: 1
   saw: {fileID: 7701617029188598660, guid: 584d0a26ec49ecb4e8b24245f6feca86, type: 3}
 --- !u!58 &5551570614170187355
 CircleCollider2D:

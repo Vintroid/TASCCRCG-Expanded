@@ -2,36 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BigGear : MonoBehaviour
+public class BigGear : Enemy
 {
-    // We want access to the GameManager functions from this class.
-    [SerializeField] GameManager gameManager;
 
-    // Enemy fields
-    private int health = 4;
+    // Enemy unique fields
+    [SerializeField] int baseHealth = 5;
+    [SerializeField] int baseScoreValue = 200;
+    [SerializeField] float speed = 1f;
+
     private float shootingTime = 0f; 
 
     // Prefabs
     [SerializeField] GameObject saw;
 
-    void Awake()
-    {
-        gameManager = GameObject.FindAnyObjectByType<GameManager>();
-    }
-
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        health = 4 + gameManager.difficulty;
+        base.Start();
+        health = baseHealth + gameManager.difficulty;
+        scoreValue = baseScoreValue;
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         shootingTime += Time.deltaTime;
 
         // Moving in increments
-        transform.position += new Vector3(-1f,0f,0f) * 1f * Time.deltaTime;
+        transform.position += Vector3.left * speed * Time.deltaTime;
 
         // Shooting
         if (shootingTime >= 5f)
@@ -66,50 +66,5 @@ public class BigGear : MonoBehaviour
         
 
     }
-    IEnumerator OnHit()
-    {
-        // Behaviour when the enemy is hit
-        if (health > 0)
-        {
-            health--;
-            this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            yield return new WaitForSeconds(0.1f);
-            this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        }
-        else
-        {
-            OnDestroyed();
-        }
-    }
-    // Behaviour when the enemy is destroyed
-    private void OnDestroyed()
-    {
-        gameManager.playerManager.AddScore(200);
-        gameManager.EnemyDown(this.gameObject);
-        GameObject.Destroy(this.gameObject);
-    }
-
-    // Keep BOTH OnTriggerEnter2D and OnCollisionEnter2D
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("EnemyWall"))
-        {
-            GameObject.Destroy(this.gameObject);
-        }
-        else if (collision.gameObject.CompareTag("PlayerBullet"))
-        {
-            StartCoroutine(OnHit());
-        }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("EnemyWall"))
-        {
-            GameObject.Destroy(this.gameObject);
-        }
-        else if (collision.GetComponent<Collider2D>().gameObject.CompareTag("PlayerBullet"))
-        {
-            StartCoroutine(OnHit());
-        }
-    }
+    
 }
