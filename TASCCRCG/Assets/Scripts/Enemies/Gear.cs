@@ -3,14 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gear : MonoBehaviour
+public class Gear : Enemy
 {
-    // We want access to the GameManager functions from this class.
-    [SerializeField] GameManager gameManager;
     Animator animator;
 
     // Enemy fields
-    private int health = 2;
+    [SerializeField] int baseHealth = 3;
+    [SerializeField] int baseScoreValue = 100;
+    // Amp Tested Default 0.5f to 3f.
+    [SerializeField] float minMoveAmp = 0.5f;
+    [SerializeField] float maxMoveAmp = 3f;
+
     private float time = 0f;
     private float amp;
     private float shootingTime = 0f;
@@ -20,25 +23,28 @@ public class Gear : MonoBehaviour
     // Prefabs
     [SerializeField] GameObject saw;
 
-    void Awake()
+    protected override void Awake()
     {
-        gameManager = GameObject.FindAnyObjectByType<GameManager>();
+        base.Awake();
         animator = this.GetComponent<Animator>();
         shoot = false;
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        health = 2 + gameManager.difficulty;
+        base.Start();
+        health = baseHealth + gameManager.difficulty;
 
         // Random amplitude
-        amp = UnityEngine.Random.Range(0.5f, 3f);
+        amp = UnityEngine.Random.Range(minMoveAmp, maxMoveAmp);
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         // Setting animator speed
         if (!shoot) {
 
@@ -58,19 +64,15 @@ public class Gear : MonoBehaviour
             transform.position = new Vector3(7.5f, 0f, 0f) - new Vector3(x, y, 0f);
         }
 
-
-
         // Shooting
         if (shootingTime >= 2f)
         {
             StartCoroutine(Shoot());
             shootingTime = 0f;
         }
-
-
     }
 
-    IEnumerator Shoot()
+    private IEnumerator Shoot()
     {
         shoot = true;
         animator.SetFloat("Vert_speed", 0f);
@@ -80,57 +82,13 @@ public class Gear : MonoBehaviour
         // Shooting the saw octagonally
         DetachSaws();
 
+        yield return new WaitForSeconds(0.75f);
+
         animator.ResetTrigger("shoot");
         chargeTime += Time.deltaTime;
 
         shoot = false;
 
-    }
-    IEnumerator OnHit()
-    {
-        // Behaviour when the enemy is hit
-        if (health > 0)
-        {
-            health--;
-            this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            yield return new WaitForSeconds(0.1f);
-            this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        }
-        else
-        {
-            OnDestroyed();
-        }
-    }
-    // Behaviour when the enemy is destroyed
-    private void OnDestroyed()
-    {
-        gameManager.playerManager.AddScore(100);
-        gameManager.EnemyDown(this.gameObject);
-        GameObject.Destroy(this.gameObject);
-    }
-
-    // Keep BOTH OnTriggerEnter2D and OnCollisionEnter2D
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.gameObject.CompareTag("EnemyWall"))
-        {
-            GameObject.Destroy(this.gameObject);
-        }
-        if (collision.gameObject.CompareTag("PlayerBullet"))
-        {
-            StartCoroutine(OnHit());
-        }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("EnemyWall"))
-        {
-            GameObject.Destroy(this.gameObject);
-        }
-        if (collision.GetComponent<Collider2D>().gameObject.CompareTag("PlayerBullet"))
-        {
-            StartCoroutine(OnHit());
-        }
     }
 
     private void DetachSaws()
