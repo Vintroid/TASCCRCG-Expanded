@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Wrench : MonoBehaviour
@@ -10,40 +11,66 @@ public class Wrench : MonoBehaviour
     // Enemy body
     [SerializeField] Rigidbody2D rb;
 
-    // Enemy fields
+    // Enemy global fields
     private int health = 2;
+    private float damageFlashDuration = 0.1f;
+    private SpriteRenderer spriteRenderer;
+    private bool isFlashing = false;
+
+    // Enemy unique fields
+    [SerializeField] int baseHealth = 2;
+    [SerializeField] int scoreValue = 50;
+    [SerializeField] float speed = 2f;
+
+
 
     void Awake()
     {
         gameManager = GameObject.FindAnyObjectByType<GameManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
-
-    // Start is called before the first frame update
     void Start()
     {
-        health = 2 + gameManager.difficulty;
+        health = baseHealth + gameManager.difficulty;
     }
 
     void Update()
     {
         // Enemy movement
-        transform.position += new Vector3(-1f, 0f, 0f) * Time.deltaTime * 2f;
+        transform.position += Vector3.left * Time.deltaTime * speed;
     }
 
     // Behaviour when the enemy is hit
-    IEnumerator OnHit()
+    private void TakeDamage()
     {
-        if (health > 0)
-        {
-            health--;
-            this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            yield return new WaitForSeconds(0.1f);
-            this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        }
-        else
+        health--;
+
+        if (health <= 0)
         {
             OnDestroyed();
         }
+        else
+        {
+            // avoids flashing multiple time at the same time
+            if (!isFlashing)
+            {
+                StartCoroutine(DamageFlashCoroutine());
+            }
+        }
+    }
+
+    IEnumerator DamageFlashCoroutine()
+    {
+        isFlashing = true;
+
+        // Enemy flashes quickly when taking damage.
+        spriteRenderer.enabled = false;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.enabled = true;
+
+        isFlashing = false;
+
+
     }
 
     // Behaviour when the enemy is destroyed
@@ -56,33 +83,21 @@ public class Wrench : MonoBehaviour
         GameObject.Destroy(this.gameObject);
     }
 
-    // Keep BOTH OnTriggerEnter2D and OnCollisionEnter2D
-    private void OnCollisionEnter2D(Collision2D collision)
+    // Handling collision to avoid OnCollisionEnter2D and OnTriggerEnter2D to repeat code.
+    private void HandleCollision(GameObject gameObject)
     {
-        if (collision.collider.gameObject.CompareTag("EnemyWall"))
+        if (gameObject.CompareTag("EnemyWall"))
         {
-            GameObject.Destroy(this.gameObject);
+            Destroy(gameObject);
         }
-        if (collision.gameObject.CompareTag("PlayerBullet"))
+        if (gameObject.CompareTag("PlayerBullet"))
         {
-            StartCoroutine(OnHit());
+            TakeDamage();
         }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("EnemyWall"))
-        {
-            GameObject.Destroy(this.gameObject);
-        }
-        if (collision.GetComponent<Collider2D>().gameObject.CompareTag("PlayerBullet"))
-        {
-            StartCoroutine(OnHit());
-        }
-        // for debugging only
-        if (collision.gameObject.CompareTag("Player")) {
-            Debug.Log("Wrench registered collision with player");
-        }
+        HandleCollision(collision.gameObject);
     }
 }

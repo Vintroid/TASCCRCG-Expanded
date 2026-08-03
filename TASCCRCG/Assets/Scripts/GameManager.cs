@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public int waveCounter = 0;
     public float powerupTimer = 3f;
 
-    // Player Manager
+    // Managers
     [SerializeField] public playerManager playerManager;
 
     // Prefabs
