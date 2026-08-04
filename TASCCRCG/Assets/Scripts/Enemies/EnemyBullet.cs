@@ -19,28 +19,23 @@ public class EnemyBullet : MonoBehaviour
         this.direction = direction.normalized;
     }
 
-    // Keep BOTH OnTriggerEnter2D and OnCollisionEnter2D
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.gameObject.CompareTag("PlayerBullet") ||
-                collision.collider.gameObject.CompareTag("Player"))
-        {
-            GameObject.Destroy(this.gameObject);
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("PlayerBullet") ||
-               collision.gameObject.CompareTag("Player"))
+        HandleCollision(collision.gameObject);
+    }
+
+    protected virtual void HandleCollision(GameObject otherObject)
+    {
+        if (otherObject.CompareTag("PlayerBullet") ||
+               otherObject.CompareTag("Player"))
         {
-            GameObject.Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 
 
     private void OnBecameInvisible()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }
