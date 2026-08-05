@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class EnemyBullet : MonoBehaviour
 {
@@ -9,11 +11,14 @@ public class EnemyBullet : MonoBehaviour
     private Vector3 direction;
     [SerializeField] float bulletSpeed = 3f;
 
+    private IObjectPool<EnemyBullet> pool;
+
     void Update()
     {
         transform.position += direction * bulletSpeed * Time.deltaTime;
     }
 
+    // Initialize is used to reset an EnemyBullet
     public void Initialize(Vector3 direction)
     {
         this.direction = direction.normalized;
@@ -29,13 +34,18 @@ public class EnemyBullet : MonoBehaviour
         if (otherObject.CompareTag("PlayerBullet") ||
                otherObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            pool.Release(this);
         }
     }
 
-
     private void OnBecameInvisible()
     {
-        Destroy(gameObject);
+        pool.Release(this);
+    }
+
+    // Setting that reference to the pool. Called from outside.
+    public void SetPool(IObjectPool<EnemyBullet> enemyBulletPool)
+    {
+        this.pool = enemyBulletPool;
     }
 }

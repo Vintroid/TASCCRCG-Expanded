@@ -20,9 +20,6 @@ public class Gear : Enemy
     private float nextShotTime = 0f;
     private bool isShooting;
 
-    // Prefabs
-    [SerializeField] GameObject saw;
-
     protected override void Awake()
     {
         base.Awake();
@@ -31,7 +28,7 @@ public class Gear : Enemy
         nextShotTime = time + fireRate;
     }
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update.
     protected override void Start()
     {
         base.Start();
@@ -46,7 +43,6 @@ public class Gear : Enemy
     protected override void Update()
     {
         base.Update();
-        Debug.Log($"isShooting={isShooting}, time={time}");
 
         // Setting animator speed
         if (!isShooting)
@@ -94,14 +90,14 @@ public class Gear : Enemy
     private void DetachSaws()
     {
         // Octagonal pattern
-        SpawnProjectile(saw, Vector3.right, 0);
-        SpawnProjectile(saw, Vector3.up + Vector3.right, 45);
-        SpawnProjectile(saw, Vector3.up, 90);
-        SpawnProjectile(saw, Vector3.up + Vector3.left, 135);
-        SpawnProjectile(saw, Vector3.left, 180);
-        SpawnProjectile(saw, Vector3.down + Vector3.left, 225);
-        SpawnProjectile(saw, Vector3.down, 270);
-        SpawnProjectile(saw, Vector3.down + Vector3.right, 315);
+        SpawnProjectile(Vector3.right, 0);
+        SpawnProjectile(Vector3.up + Vector3.right, 45);
+        SpawnProjectile(Vector3.up, 90);
+        SpawnProjectile(Vector3.up + Vector3.left, 135);
+        SpawnProjectile(Vector3.left, 180);
+        SpawnProjectile(Vector3.down + Vector3.left, 225);
+        SpawnProjectile(Vector3.down, 270);
+        SpawnProjectile(Vector3.down + Vector3.right, 315);
 
         gameManager.playerManager.AddScore(40);
     }

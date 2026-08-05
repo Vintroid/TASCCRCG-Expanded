@@ -14,9 +14,6 @@ public class BigGear : Enemy
     private float shootingTime = 0f;
     private bool isShooting;
 
-    // Prefabs
-    [SerializeField] GameObject saw;
-
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -50,11 +47,11 @@ public class BigGear : Enemy
         for(int i=0; i<3; i++)
         { 
             // Radial pattern 0 to 180.
-            SpawnProjectile(saw,Vector3.left, 0);
-            SpawnProjectile(saw,Vector3.up + Vector3.left, 45);
-            SpawnProjectile(saw,Vector3.up, 90);
-            SpawnProjectile(saw, Vector3.up + Vector3.right, 135);
-            SpawnProjectile(saw, Vector3.right, 180);
+            SpawnProjectile(Vector3.left, 0);
+            SpawnProjectile(Vector3.up + Vector3.left, 45);
+            SpawnProjectile(Vector3.up, 90);
+            SpawnProjectile(Vector3.up + Vector3.right, 135);
+            SpawnProjectile(Vector3.right, 180);
 
             gameManager.playerManager.AddScore(75);
             yield return new WaitForSeconds(0.33f);

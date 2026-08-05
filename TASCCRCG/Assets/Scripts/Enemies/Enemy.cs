@@ -88,9 +88,14 @@ public class Enemy : MonoBehaviour
         HandleCollision(collision.gameObject);
     }
 
-    protected EnemyBullet SpawnProjectile(GameObject prefab, Vector3 direction, float angle)
+    protected EnemyBullet SpawnProjectile(Vector3 direction, float angle)
     {
-        EnemyBullet bullet = Instantiate(prefab, transform.position, Quaternion.Euler(0, 0, angle)).GetComponent<EnemyBullet>();
+        // Enemy will pick from bullet pool to spawn a projectile
+        EnemyBullet bullet = EnemyBulletPool.Instance.Get();
+
+        bullet.transform.position = transform.position;
+        bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
+
         bullet.Initialize(direction);
 
         return bullet;

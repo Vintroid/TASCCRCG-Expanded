@@ -148,10 +148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a867b0c408974146b08e2657812231d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePool: {fileID: 0}
   baseHealth: 5
   baseScoreValue: 200
   speed: 1
-  saw: {fileID: 7701617029188598660, guid: 584d0a26ec49ecb4e8b24245f6feca86, type: 3}
 --- !u!58 &5551570614170187355
 CircleCollider2D:
   m_ObjectHideFlags: 0
