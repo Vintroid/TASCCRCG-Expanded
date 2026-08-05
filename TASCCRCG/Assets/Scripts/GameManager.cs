@@ -145,13 +145,13 @@ public class GameManager : MonoBehaviour
         int rng = UnityEngine.Random.Range(0, 100);
 
         // Mixed wave
-        if (rng <= 3 * difficulty + 15)
+        if (rng <= 3 * difficulty + 40)
         {
             waveType = "wrenchgear";
         }
 
         // Solo waves
-        else if(rng <= 3 * difficulty + 20)
+        else if(rng <= 3 * difficulty + 100)
         {
             waveType = "biggear";
         }

@@ -90,14 +90,14 @@ public class Gear : Enemy
     private void DetachSaws()
     {
         // Octagonal pattern
-        SpawnProjectile(Vector3.right, 0);
-        SpawnProjectile(Vector3.up + Vector3.right, 45);
-        SpawnProjectile(Vector3.up, 90);
-        SpawnProjectile(Vector3.up + Vector3.left, 135);
-        SpawnProjectile(Vector3.left, 180);
-        SpawnProjectile(Vector3.down + Vector3.left, 225);
-        SpawnProjectile(Vector3.down, 270);
-        SpawnProjectile(Vector3.down + Vector3.right, 315);
+        SpawnProjectile(ProjectileType.Saw, Vector3.right, 0);
+        SpawnProjectile(ProjectileType.Saw, Vector3.up + Vector3.right, 45);
+        SpawnProjectile(ProjectileType.Saw, Vector3.up, 90);
+        SpawnProjectile(ProjectileType.Saw, Vector3.up + Vector3.left, 135);
+        SpawnProjectile(ProjectileType.Saw, Vector3.left, 180);
+        SpawnProjectile(ProjectileType.Saw, Vector3.down + Vector3.left, 225);
+        SpawnProjectile(ProjectileType.Saw, Vector3.down, 270);
+        SpawnProjectile(ProjectileType.Saw, Vector3.down + Vector3.right, 315);
 
         gameManager.playerManager.AddScore(40);
     }

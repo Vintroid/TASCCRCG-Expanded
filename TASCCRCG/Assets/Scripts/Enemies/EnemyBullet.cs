@@ -11,7 +11,9 @@ public class EnemyBullet : MonoBehaviour
     private Vector3 direction;
     [SerializeField] float bulletSpeed = 3f;
 
+    // Pooling fields
     private IObjectPool<EnemyBullet> pool;
+    private bool hasBeenReleased;
 
     void Update()
     {
@@ -21,6 +23,7 @@ public class EnemyBullet : MonoBehaviour
     // Initialize is used to reset an EnemyBullet
     public void Initialize(Vector3 direction)
     {
+        hasBeenReleased = false;
         this.direction = direction.normalized;
     }
 
@@ -34,12 +37,19 @@ public class EnemyBullet : MonoBehaviour
         if (otherObject.CompareTag("PlayerBullet") ||
                otherObject.CompareTag("Player"))
         {
+            if (hasBeenReleased)
+                return;
+
+            hasBeenReleased = true;
             pool.Release(this);
         }
     }
 
     private void OnBecameInvisible()
     {
+        if (hasBeenReleased) return;
+
+        hasBeenReleased = true;
         pool.Release(this);
     }
 

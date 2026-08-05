@@ -5,9 +5,6 @@ using UnityEngine.Pool;
 
 public class EnemyBulletPool : MonoBehaviour
 {
-    // EnemyBulletPool is Singleton
-    public static EnemyBulletPool Instance {  get; private set; }
-
     // Each pooler instance take care of 1 prefab
     [SerializeField] EnemyBullet prefab;
     [SerializeField] int defaultCapacity = 50;
@@ -17,15 +14,6 @@ public class EnemyBulletPool : MonoBehaviour
 
     private void Awake()
     {
-        // Initializing instance
-        if(Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-
         // Initializing functions related to pool instance
         pool = new ObjectPool<EnemyBullet>(
 

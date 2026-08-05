@@ -88,10 +88,15 @@ public class Enemy : MonoBehaviour
         HandleCollision(collision.gameObject);
     }
 
-    protected EnemyBullet SpawnProjectile(Vector3 direction, float angle)
+    // Functions to spawn different types of projectiles based on enum
+    protected EnemyBullet SpawnProjectile(ProjectileType type, Vector3 direction, float angle)
     {
-        // Enemy will pick from bullet pool to spawn a projectile
-        EnemyBullet bullet = EnemyBulletPool.Instance.Get();
+        Debug.Assert(ProjectilePoolManager.Instance != null, "ProjectilePoolManager.Instance is null!");
+
+        // Enemy will pick from saw pool to spawn a saw
+        EnemyBullet bullet = ProjectilePoolManager.Instance.GetProjectile(type);
+
+        Debug.Assert(bullet != null, $"Pool returned null for projectile type {type}");
 
         bullet.transform.position = transform.position;
         bullet.transform.rotation = Quaternion.Euler(0, 0, angle);
