@@ -183,9 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd23578821deb14b9f0f75a365a86f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePool: {fileID: 0}
   baseHealth: 3
   baseScoreValue: 100
-  minMoveAmp: 0.5
+  minMoveAmp: 0.1
   maxMoveAmp: 3
-  fireRate: 2
+  fireRate: 2.5

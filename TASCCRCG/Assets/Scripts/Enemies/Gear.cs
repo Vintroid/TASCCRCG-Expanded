@@ -11,9 +11,9 @@ public class Gear : Enemy
     [Header("Characteristics")]
     [SerializeField] int baseHealth = 3;
     [SerializeField] int baseScoreValue = 100;
-    [SerializeField] float minMoveAmp = 0.5f; // Amp Tested Default 0.5f to 3f.
+    [SerializeField] float minMoveAmp = 0.25f; // Amp Tested Default 0.25f to 3f.
     [SerializeField] float maxMoveAmp = 3f;
-    [SerializeField] float fireRate = 2f;
+    [SerializeField] float fireRate = 2.5f;
 
     private float time = 0f;
     private float amp;
@@ -74,7 +74,7 @@ public class Gear : Enemy
         isShooting = true;
         animator.SetFloat("Vert_speed", 0f);
         animator.SetTrigger("shoot");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         // Shooting the saw octagonally
         DetachSaws();
