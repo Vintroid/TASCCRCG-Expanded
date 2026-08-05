@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class Player2 : MonoBehaviour
 {
+    [Header("Prefabs")]
     [SerializeField] private GameObject bishopHat2;
     [SerializeField] private GameObject rookHat2;
     [SerializeField] private GameObject queenHat2;
 
+    [Header("Fields from Player1")]
     [SerializeField] private GameObject player1;
     private Player1 p1Script;
-    private playerManager playerManager;
-
-    private Rigidbody2D rb;
-    private float damageCooldownTimer = 0.0f;
-    public bool shooting = false;
 
     // get info from player1
     private float damageCooldownTime;
@@ -25,7 +22,11 @@ public class Player2 : MonoBehaviour
     private float yMin;
     private float yMax;
 
-    
+    [Header("Player2 Fields")]
+    private playerManager playerManager;
+    private Rigidbody2D rb;
+    private float damageCooldownTimer = 0.0f;
+    public bool shooting = false;
 
 
     // Start is called before the first frame update

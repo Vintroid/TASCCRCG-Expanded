@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Player1 : MonoBehaviour
 {
-
+    [Header("Prefabs")]
     [SerializeField] public GameObject bishopHat1;
     [SerializeField] public GameObject rookHat1;
     [SerializeField] public GameObject queenHat1;
@@ -16,11 +16,11 @@ public class Player1 : MonoBehaviour
     [SerializeField] private GameObject life3;
     [SerializeField] private GameObject life4;
 
+    // info for player2
+    [Header("Player1 Fields")]
     private Rigidbody2D rb;
     private float damageCooldownTimer = 0.0f;
     public bool shooting = false;
-
-    // info for player2
     public UnityEvent lastLife;
     public playerManager playerManager;
 
