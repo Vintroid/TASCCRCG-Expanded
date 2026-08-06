@@ -1,55 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerBulletSpawner : MonoBehaviour
 {
     private playerManager playerManager;
+    private Player player;
 
+    [Header("Bullet Prefabs")]
     [SerializeField] private GameObject straightPlayerBullet;
     [SerializeField] private GameObject diagonalPlayerBullet;
-    [SerializeField] public bool attachedToPlayer = false;
 
+    [Header("Fields")]
     [SerializeField] private float bulletTime = 10.0f;
     [SerializeField] private float bulletCooldownTime = 0.25f;
     private float bulletCooldownTimer = 0.0f;
-    private bool playerShooting = false;
 
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private void Awake()
     {
-        playerManager = GameObject.Find("playerManager").GetComponent<playerManager>();
+        player = GetComponent<Player>();
+
+        if(player == null)
+        {
+            Debug.LogError($"{name}: PlayerBulletSpawner requires a Player component on the same GameObject.");
+        }
+    }
+
+    private void Start()
+    {
+        playerManager = FindAnyObjectByType<playerManager>();
+
+        if(playerManager == null)
+        {
+            Debug.LogError($"{name}: playerManager was not found.");
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (attachedToPlayer)
+        if(player == null || playerManager == null)
         {
-            UpdateTimers();
-            CheckShooting();
-
-            if (playerShooting && bulletCooldownTimer <= 0)
-            {
-                Shoot();
-            }
+            return;
         }
+
+        UpdateTimers();
+
+        if (player.IsShooting && bulletCooldownTimer <= 0f)
+        {
+            Shoot();
+        }
+        
         
     }
 
-    void CheckShooting()
-    {
-        if(this.gameObject.GetComponent<Player1>() != null)
-        {
-            playerShooting = this.gameObject.GetComponent<Player1>().shooting;
-        }
-        else if(this.gameObject.gameObject.GetComponent<Player2>() != null)
-        {
-            playerShooting = this.gameObject.GetComponent<Player2>().shooting;
-        }
-    }
-
+    // Counts down cooldown for firing again
     void UpdateTimers()
     {
         if (bulletCooldownTimer > 0)
@@ -64,45 +72,31 @@ public class PlayerBulletSpawner : MonoBehaviour
 
         if (playerManager.mode == "basic")
         {
-            GameObject bullet0 = Instantiate(straightPlayerBullet, transform.position, Quaternion.identity);
-            bullet0.GetComponent<PlayerBullet>().direction = new Vector3(1, 0, 0).normalized;
-            Destroy(bullet0, bulletTime);
+            SpawnBullet(straightPlayerBullet, Vector3.right, 0f);
         }
         if (playerManager.mode == "rook" || playerManager.mode == "queen")
         {
-            GameObject bulletN = Instantiate(straightPlayerBullet, transform.position, Quaternion.Euler(0, 0, 90));
-            bulletN.GetComponent<PlayerBullet>().direction = new Vector3(0, 1, 0).normalized;
-            Destroy(bulletN, bulletTime);
-
-            GameObject bulletE = Instantiate(straightPlayerBullet, transform.position, Quaternion.Euler(0, 0, 0));
-            bulletE.GetComponent<PlayerBullet>().direction = new Vector3(1, 0, 0).normalized;
-            Destroy(bulletE, bulletTime);
-
-            GameObject bulletS = Instantiate(straightPlayerBullet, transform.position, Quaternion.Euler(0, 0, -90));
-            bulletS.GetComponent<PlayerBullet>().direction = new Vector3(0, -1, 0).normalized;
-            Destroy(bulletS, bulletTime);
-
-            GameObject bulletW = Instantiate(straightPlayerBullet, transform.position, Quaternion.Euler(0, 0, 180));
-            bulletW.GetComponent<PlayerBullet>().direction = new Vector3(-1, 0, 0).normalized;
-            Destroy(bulletW, bulletTime);
+            SpawnBullet(straightPlayerBullet, Vector3.right, 0f);
+            SpawnBullet(straightPlayerBullet, Vector3.up, 90f);
+            SpawnBullet(straightPlayerBullet, Vector3.left, 180f);
+            SpawnBullet(straightPlayerBullet, Vector3.down, 270f);
         }
         if (playerManager.mode == "bishop" || playerManager.mode == "queen")
         {
-            GameObject bulletNW = Instantiate(diagonalPlayerBullet, transform.position, Quaternion.Euler(0, 0, 90));
-            bulletNW.GetComponent<PlayerBullet>().direction = new Vector3(-1, 1, 0).normalized;
-            Destroy(bulletNW, bulletTime);
-
-            GameObject bulletNE = Instantiate(diagonalPlayerBullet, transform.position, Quaternion.Euler(0, 0, 0));
-            bulletNE.GetComponent<PlayerBullet>().direction = new Vector3(1, 1, 0).normalized;
-            Destroy(bulletNE, bulletTime);
-
-            GameObject bulletSE = Instantiate(diagonalPlayerBullet, transform.position, Quaternion.Euler(0, 0, -90));
-            bulletSE.GetComponent<PlayerBullet>().direction = new Vector3(1, -1, 0).normalized;
-            Destroy(bulletSE, bulletTime);
-
-            GameObject bulletSW = Instantiate(diagonalPlayerBullet, transform.position, Quaternion.Euler(0, 0, 180));
-            bulletSW.GetComponent<PlayerBullet>().direction = new Vector3(-1, -1, 0).normalized;
-            Destroy(bulletSW, bulletTime);
+            SpawnBullet(diagonalPlayerBullet, (Vector3.right + Vector3.up).normalized, 0f);
+            SpawnBullet(diagonalPlayerBullet, (Vector3.left + Vector3.up).normalized, 90f);
+            SpawnBullet(diagonalPlayerBullet, (Vector3.left + Vector3.down).normalized, 180f);
+            SpawnBullet(diagonalPlayerBullet, (Vector3.right + Vector3.down).normalized, 270f);
         }
+    }
+
+    private void SpawnBullet(GameObject bulletPrefab, Vector3 direction, float angle)
+    {
+        GameObject bulletObject = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0, 0, angle));
+
+        PlayerBullet bullet = bulletObject.GetComponent<PlayerBullet>();
+        bullet.Initialize(direction);
+
+        Destroy(bulletObject, bulletTime);
     }
 }

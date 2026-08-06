@@ -15,7 +15,6 @@ public class PlayerBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         transform.position += direction * bulletSpeed * Time.deltaTime;
     }
 
@@ -34,4 +33,11 @@ public class PlayerBullet : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
+
+    // Bullet just spawned and is initialized
+    public void Initialize(Vector3 direction)
+    {
+        this.direction = direction.normalized;
+    }
+       
 }

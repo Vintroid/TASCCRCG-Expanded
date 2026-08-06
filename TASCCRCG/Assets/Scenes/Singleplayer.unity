@@ -392,7 +392,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 58004874}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -475,7 +475,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   straightPlayerBullet: {fileID: 8337338384906358947, guid: 48b84b8367a8a41f38e79b6c5b6bdaa6, type: 3}
   diagonalPlayerBullet: {fileID: 996007702632301554, guid: 0cb5db517cd1647fca78bd9f67bb0dfc, type: 3}
-  attachedToPlayer: 1
   bulletTime: 10
   bulletCooldownTime: 0.25
 --- !u!114 &58004885
@@ -490,26 +489,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d052194c11848e79faa678b7bc261e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bishopHat1: {fileID: 9079860387887413381}
-  rookHat1: {fileID: 4308584143897533265}
-  queenHat1: {fileID: 3057256017498089666}
-  playerHealth: 4
-  life1: {fileID: 734117739}
-  life2: {fileID: 1767607504}
-  life3: {fileID: 1653552402}
-  life4: {fileID: 867414662}
-  shooting: 0
-  lastLife:
-    m_PersistentCalls:
-      m_Calls: []
-  playerManager: {fileID: 151335075}
-  damageCooldownTime: 2
+  bishopHat: {fileID: 967752983836490606, guid: 4e5ff25ffaf464491b44b3802e314764, type: 3}
+  rookHat: {fileID: 8174712753057265857, guid: d7592085a6ee54deda39992e19408514, type: 3}
+  queenHat: {fileID: 7406845137406750012, guid: 8b4a5623c56f841f7aacd7ce8170bb05, type: 3}
   moveSpeed: 5
   scrollSpeed: 1.5
   xMin: -4.55
   xMax: 4.34
   yMin: -3.41
   yMax: 2.92
+  damageCooldownTime: 2
+  damageFlashDuration: 0.1
+  playerHealth: 4
+  life1: {fileID: 734117739}
+  life2: {fileID: 1767607504}
+  life3: {fileID: 1653552402}
+  life4: {fileID: 867414662}
+  lastLife:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &58004886
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1459,7 +1457,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5.2083335
+  orthographic size: 5.03125
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3091,7 +3089,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   straightPlayerBullet: {fileID: 8337338384906358947, guid: 48b84b8367a8a41f38e79b6c5b6bdaa6, type: 3}
   diagonalPlayerBullet: {fileID: 996007702632301554, guid: 0cb5db517cd1647fca78bd9f67bb0dfc, type: 3}
-  attachedToPlayer: 1
   bulletTime: 10
   bulletCooldownTime: 0.25
 --- !u!61 &1807700851
@@ -3147,7 +3144,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1807700847}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -3178,11 +3175,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ad56b122c4149afaa24e98a499a1ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bishopHat2: {fileID: 1921525949}
-  rookHat2: {fileID: 744411181}
-  queenHat2: {fileID: 937053563}
-  player1: {fileID: 58004874}
-  shooting: 0
+  bishopHat: {fileID: 967752983836490606, guid: 4e5ff25ffaf464491b44b3802e314764, type: 3}
+  rookHat: {fileID: 8174712753057265857, guid: d7592085a6ee54deda39992e19408514, type: 3}
+  queenHat: {fileID: 7406845137406750012, guid: 8b4a5623c56f841f7aacd7ce8170bb05, type: 3}
+  moveSpeed: 5
+  scrollSpeed: 1.5
+  xMin: -4.55
+  xMax: 4.34
+  yMin: -3.41
+  yMax: 2.92
+  damageCooldownTime: 2
+  damageFlashDuration: 0.1
+  player1: {fileID: 58004885}
 --- !u!82 &1807700854
 AudioSource:
   m_ObjectHideFlags: 0

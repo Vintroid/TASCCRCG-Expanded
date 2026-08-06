@@ -3,253 +3,94 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Player1 : MonoBehaviour
+public class Player1 : Player
 {
-    [Header("Prefabs")]
-    [SerializeField] public GameObject bishopHat1;
-    [SerializeField] public GameObject rookHat1;
-    [SerializeField] public GameObject queenHat1;
-
+    [Header("Life")]
     [SerializeField] public int playerHealth = 4;
     [SerializeField] private GameObject life1;
     [SerializeField] private GameObject life2;
     [SerializeField] private GameObject life3;
     [SerializeField] private GameObject life4;
 
-    // info for player2
-    [Header("Player1 Fields")]
-    private Rigidbody2D rb;
-    private float damageCooldownTimer = 0.0f;
-    public bool shooting = false;
-    public UnityEvent lastLife;
-    public playerManager playerManager;
+    [Header("Other Fields")]
+    [SerializeField] private UnityEvent lastLife;
+    private AudioSource audioSource;
 
-    [SerializeField] public float damageCooldownTime = 0.05f;
-    [SerializeField] public float moveSpeed = 5.0f;
-    [SerializeField] public float scrollSpeed = 2.5f;
-    [SerializeField] public float xMin;
-    [SerializeField] public float xMax;
-    [SerializeField] public float yMin;
-    [SerializeField] public float yMax;
-
-    // Awake is called before Start() so that reference is initialized
-    void Awake()
+    protected override void Awake()
     {
-        // playerManager script reference
-        playerManager = GameObject.Find("playerManager").GetComponent<playerManager>();
-        playerManager.OnModeChanged.AddListener(HandleModeChanged);
-
-        // rigid body
-        rb = this.gameObject.GetComponent<Rigidbody2D>();
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        base.Awake();
+        audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (playerManager.gameOver)
-        {
-            this.gameObject.SetActive(false);
-        }
-        UpdateTimers();
-        UpdateMovement();
-        CheckShooting();
-    }
+    protected override Vector2 ReadMovementInput() {
 
-    void UpdateTimers()
-    {
-        if (damageCooldownTimer > 0)
-        {
-            damageCooldownTimer -= Time.deltaTime;
-        }
-    }
-
-    void UpdateMovement() {
-        Vector3 pos = transform.position;
-        pos.x -= scrollSpeed * Time.deltaTime;
+        float horizontal = 0f;
+        float vertical = 0f;
 
 
         if (Input.GetKey("w"))
         {
-            pos.y += moveSpeed * Time.deltaTime;
+            vertical++;
         }
         if (Input.GetKey("a"))
         {
-            pos.x -= moveSpeed * Time.deltaTime;
+            horizontal--;
         }
         if (Input.GetKey("s"))
         {
-            pos.y -= moveSpeed * Time.deltaTime;
+            vertical--;
         }
         if (Input.GetKey("d"))
         {
-            pos.x += moveSpeed * Time.deltaTime;
+            horizontal++;
         }
 
-        // Clamp the position values
-        pos.x = Mathf.Clamp(pos.x, xMin, xMax);
-        pos.y = Mathf.Clamp(pos.y, yMin, yMax);
-
-        transform.position = pos;
+        return new Vector2 (horizontal, vertical).normalized;
     }
 
-    // Keep BOTH OnTriggerEnter2D and OnCollisionEnter2D
-    private void OnTriggerEnter2D(Collider2D other)
+    protected override void ReduceSharedHealth()
     {
-        // hat collisions
-        if (other.gameObject.CompareTag("bishopPowerUp"))
-        {
-            playerManager.ChangeMode("bishop");
-            playerManager.AddScore(10);
-            Destroy(other.gameObject);
-
-        }
-        else if (other.gameObject.CompareTag("rookPowerUp"))
-        {
-            playerManager.ChangeMode("rook");
-            playerManager.AddScore(10);
-            Destroy(other.gameObject);
-        }
-        else if (other.gameObject.CompareTag("queenPowerUp"))
-        {
-            playerManager.ChangeMode("queen");
-            playerManager.AddScore(10);
-            Destroy(other.gameObject);
-        }
-        // enemy collisions (take damage)
-        else if (other.gameObject.CompareTag("EnemyBullet") || other.gameObject.CompareTag("Wrench") || other.gameObject.CompareTag("Gear") || other.gameObject.CompareTag("Big Gear"))
-        {
-            Debug.Log("collided with: " + other.gameObject);
-            if (damageCooldownTimer <= 0)
-            {
-                StartCoroutine(OnHit());
-            }
-                
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        // hat collisions
-        if (other.gameObject.CompareTag("bishopPowerUp"))
-        {
-            playerManager.ChangeMode("bishop");
-            playerManager.AddScore(10);
-            Destroy(other.gameObject);
-        }
-        else if (other.gameObject.CompareTag("rookPowerUp"))
-        {
-            playerManager.ChangeMode("rook");
-            playerManager.AddScore(10);
-            Destroy(other.gameObject);
-        }
-        else if (other.gameObject.CompareTag("queenPowerUp"))
-        {
-            playerManager.ChangeMode("queen");
-            playerManager.AddScore(10);
-            Destroy(other.gameObject);
-        }
-        // enemy collisions (take damage)
-        else if (other.gameObject.CompareTag("EnemyBullet") || other.gameObject.CompareTag("Wrench") || other.gameObject.CompareTag("Gear") || other.gameObject.CompareTag("BigGear"))
-        {
-            Debug.Log("collided with: " + other.gameObject);
-            if (damageCooldownTimer <= 0)
-            {
-                StartCoroutine(OnHit());
-            }
-
-        }
-    }
-
-    // blink when hit
-    IEnumerator OnHit()
-    {
-        damageCooldownTimer = damageCooldownTime;
         ReduceHealth();
-        this.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-        yield return new WaitForSeconds(0.1f);
-        this.gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 
-    // update health(battery)
+    // update health(battery). Called from player2 also.
     public void ReduceHealth()
     {
-        playerHealth -= 1;
-        this.gameObject.GetComponent<AudioSource>().PlayOneShot(this.gameObject.GetComponent<AudioSource>().clip);
+        playerHealth--;
 
-        if(playerHealth == 3)
+        if(audioSource != null && audioSource.clip != null)
         {
-            life4.SetActive(false);
+            audioSource.PlayOneShot(this.gameObject.GetComponent<AudioSource>().clip);
+
         }
-        else if (playerHealth == 2)
+
+        switch(playerHealth)
         {
-            life3.SetActive(false);
-        }
-        else if (playerHealth == 1)
-        {
-            life2.SetActive(false); 
-            lastLife.Invoke(); 
-            StartCoroutine(BlinkRed());
-        }
-        else if (playerHealth == 0)
-        {
-            life1.SetActive(false);
-            playerManager.GetComponent<playerManager>().GameOver();
+            case 3:
+                life4.SetActive(false);
+                break;
+
+            case 2:
+                life3.SetActive(false);
+                break;
+
+            case 1:
+                life2.SetActive(false);
+                break;
+
+            case <= 0:
+                life1.SetActive(false);
+                playerManager.GameOver();
+                break;
+           
         }
     }
 
-    private void HandleModeChanged()
-    {
-        if (playerManager.mode == "basic")
-        {
-            bishopHat1.SetActive(false);
-            rookHat1.SetActive(false);
-            queenHat1.SetActive(false);
-        }
-        else if(playerManager.mode == "bishop")
-        {
-            bishopHat1.SetActive(true);
-            rookHat1.SetActive(false);
-            queenHat1.SetActive(false);
-        }
-        else if (playerManager.mode == "rook")
-        {
-            bishopHat1.SetActive(false);
-            rookHat1.SetActive(true);
-            queenHat1.SetActive(false);
-        }
-        else if (playerManager.mode == "queen")
-        {
-            bishopHat1.SetActive(false);
-            rookHat1.SetActive(false);
-            queenHat1.SetActive(true);
-        }
-    }
-
-    void CheckShooting()
+    protected override bool ReadShootInput()
     {
         // check if the player is holding the shooting key
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            shooting = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.Space))
-        {
-            shooting = false;
-        }
+        return Input.GetKey(KeyCode.Space);
     }
 
-    IEnumerator BlinkRed()
-    {
-        int blinkCount = 3;
-        Color originalColor = this.gameObject.GetComponent<SpriteRenderer>().color;
-
-        for (int i = 0; i < blinkCount; i++)
-        {
-            this.gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 162f / 255f, 162f / 255f); // FFA2A2
-            yield return new WaitForSeconds(0.1f);
-            this.gameObject.GetComponent<SpriteRenderer>().color = originalColor;
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
+    
 }
