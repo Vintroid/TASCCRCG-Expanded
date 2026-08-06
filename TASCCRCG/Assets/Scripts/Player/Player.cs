@@ -33,12 +33,12 @@ public abstract class Player : MonoBehaviour
     {
         // playerManager script reference
         playerManager = FindAnyObjectByType<playerManager>();
-        playerManager.OnModeChanged.AddListener(HandleModeChanged);
-
         if (playerManager == null)
         {
             Debug.LogError($"{name}: playerManager was not found.");
         }
+
+        playerManager.OnModeChanged.AddListener(HandleModeChanged);
 
         spriteRenderer = GetComponent<SpriteRenderer>();
 

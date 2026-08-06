@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2039304838186159732}
   - component: {fileID: 4163211742605815645}
   - component: {fileID: 1021502707789951158}
-  - component: {fileID: 7734647771853753977}
   m_Layer: 17
   m_Name: down_pawn
   m_TagString: StickyItem
@@ -75,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1510613885
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: cbfc72102c9dca24aa920dbb0ad37d00, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -151,19 +150,4 @@ MonoBehaviour:
   diagonalPlayerBullet: {fileID: 996007702632301554, guid: 0cb5db517cd1647fca78bd9f67bb0dfc, type: 3}
   bulletTime: 2
   bulletCooldownTime: 0.25
-  basicShots: 1
-  rookShots: 0
-  bishopShots: 0
---- !u!114 &7734647771853753977
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6844820334377948841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec4aeafdcb6b94b19acc2c9a78693cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   attachedToPlayer: 0
