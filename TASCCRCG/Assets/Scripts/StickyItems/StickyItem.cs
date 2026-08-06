@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class StickyItem : MonoBehaviour
 {
-    public bool stuckToPlayer = false;
-    private playerManager playerManager;
+    public bool stuckToPlayer { get; private set; }
+    private PawnBulletSpawner bulletSpawner;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        playerManager = GameObject.Find("playerManager").GetComponent<playerManager>(); ;
+        bulletSpawner = GetComponent<PawnBulletSpawner>();
+
+        if(bulletSpawner == null)
+        {
+            Debug.LogError($"{name}: StickyItem requires a PawnBulletSpawner component.");
+        }
     }
 
     // Keep BOTH OnTriggerEnter2D and OnCollisionEnter2D
@@ -19,115 +23,70 @@ public class StickyItem : MonoBehaviour
     // assuming StickyItems are NOT triggers but that enemies and enemy bullets are
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // if already attached to player
-        if (stuckToPlayer)
-        {
-            // hat collisions
-            if (collision.gameObject.CompareTag("bishopPowerUp"))
-            {
-                playerManager.ChangeMode("bishop");
-                playerManager.AddScore(10);
-                Destroy(collision.gameObject);
-
-            }
-            else if (collision.gameObject.CompareTag("rookPowerUp"))
-            {
-                playerManager.ChangeMode("rook");
-                playerManager.AddScore(10);
-                Destroy(collision.gameObject);
-            }
-            else if (collision.gameObject.CompareTag("queenPowerUp"))
-            {
-                playerManager.ChangeMode("queen");
-                playerManager.AddScore(10);
-                Destroy(collision.gameObject);
-            }
-            // if hit by an enemy or enemy bullet, destroy it along with its chilren
-            if (collision.gameObject.CompareTag("EnemyBullet") || collision.gameObject.CompareTag("Wrench") || collision.gameObject.CompareTag("Gear") || collision.gameObject.CompareTag("Big Gear"))
-            {
-                Destroy(this.gameObject);
-            }
-        }
-        // if not already attached to player
-        else
-        {
-            // if encounters the player
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                // make this object a child of the player
-                transform.SetParent(collision.gameObject.transform);
-                this.gameObject.GetComponent<PawnBulletSpawner>().attachedToPlayer = true;
-                stuckToPlayer = true;
-
-            }
-
-            // if encounters a sticky item that IS attached to the player
-            if (collision.gameObject.CompareTag("StickyItem") && collision.gameObject.GetComponent<StickyItem>().stuckToPlayer)
-            {
-                // make this object a child of the other StickyItem
-                playerManager.AddScore(5);
-                transform.SetParent(collision.gameObject.transform);
-                this.gameObject.GetComponent<PawnBulletSpawner>().attachedToPlayer = true;
-                stuckToPlayer = true;
-            }
-        }
+        HandleInteraction(collision.gameObject);
 
     }
 
     // assuming StickyItems are NOT triggers but that enemies and enemy bullets are
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // if already attached to player
-        if (stuckToPlayer)
+        HandleInteraction(collision.gameObject);
+    }
+
+    private void HandleInteraction(GameObject other)
+    {
+        if (!stuckToPlayer)
         {
-            // hat collisions
-            if (collision.gameObject.CompareTag("bishopPowerUp"))
-            {
-                playerManager.ChangeMode("bishop");
-                playerManager.AddScore(10);
-                Destroy(collision.gameObject);
-
-            }
-            else if (collision.gameObject.CompareTag("rookPowerUp"))
-            {
-                playerManager.ChangeMode("rook");
-                playerManager.AddScore(10);
-                Destroy(collision.gameObject);
-            }
-            else if (collision.gameObject.CompareTag("queenPowerUp"))
-            {
-                playerManager.ChangeMode("queen");
-                playerManager.AddScore(10);
-                Destroy(collision.gameObject);
-            }
-            // if hit by an enemy or enemy bullet, destroy it along with its chilren
-            if (collision.gameObject.CompareTag("EnemyBullet") || collision.gameObject.CompareTag("Wrench") || collision.gameObject.CompareTag("Gear") || collision.gameObject.CompareTag("Big Gear"))
-            {
-                Destroy(this.gameObject);
-            }
+            TryAttach(other);
+            return;
         }
-        // if not already attached to player
-        else
+
+        if (IsDamageSource(other))
         {
-            // if encounters the player
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                // make this object a child of the player
-                transform.SetParent(collision.gameObject.transform);
-                this.gameObject.GetComponent<PawnBulletSpawner>().attachedToPlayer = true;
-                stuckToPlayer = true;
-
-            }
-
-            // if encounters a sticky item that IS attached to the player
-            if (collision.gameObject.CompareTag("StickyItem") && collision.gameObject.GetComponent<StickyItem>().stuckToPlayer)
-            {
-                // make this object a child of the other StickyItem
-                playerManager.AddScore(5);
-                transform.SetParent(collision.gameObject.transform);
-                this.gameObject.GetComponent<PawnBulletSpawner>().attachedToPlayer = true;
-                stuckToPlayer = true;
-            }
+            Destroy(gameObject);
         }
+    }
+
+    private void TryAttach(GameObject other)
+    {
+        Player player = other.GetComponent<Player>();
+
+        // Pawn stuck to player
+        if(player != null)
+        {
+            Attach(player, player.transform);
+            return;
+        }
+
+        StickyItem otherStickyItem = other.GetComponent<StickyItem>();
+
+        if(otherStickyItem == null || !otherStickyItem.stuckToPlayer)
+        {
+            return;
+        }
+
+        player = otherStickyItem.GetComponentInParent<Player>();
+
+        if(player == null)
+        {
+            return;
+        }
+
+        // Pawn stuck to another sticky item
+        Attach(player, otherStickyItem.transform);
+    }
+
+    private void Attach(Player player, Transform newParent)
+    {
+        transform.SetParent(newParent, true);
+        stuckToPlayer = true;
+
+        bulletSpawner.AttachToPlayer(player);
+    }
+
+    // What can hurt the sticky items?
+    private static bool IsDamageSource(GameObject other)
+    {
+        return other.CompareTag("EnemyBullet") || other.GetComponent<Enemy>() != null;
     }
 }

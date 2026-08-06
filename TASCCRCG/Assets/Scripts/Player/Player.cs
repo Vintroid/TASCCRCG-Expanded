@@ -155,8 +155,7 @@ public abstract class Player : MonoBehaviour
     // Needs to scale with new with tags that can hurt player
     private static bool IsDamageSource(GameObject other)
     {
-        return other.CompareTag("EnemyBullet") || other.CompareTag("Wrench") ||
-            other.CompareTag("Gear") || other.CompareTag("Big Gear");
+        return other.CompareTag("EnemyBullet") || other.GetComponent<Enemy>();
     }
 
     // blink when hit
