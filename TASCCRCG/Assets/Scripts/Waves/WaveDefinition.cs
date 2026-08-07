@@ -6,7 +6,7 @@ using UnityEngine;
     fileName = "NewWave",
     menuName = "TASCCRCG/Waves/Wave Definition"
 
-)]
+)] // Can be created from editor. Contain info about the wave enemy and numbers.
 
 public class WaveDefinition : ScriptableObject
 {

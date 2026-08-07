@@ -1,12 +1,9 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class WaveSpawner : MonoBehaviour
 {
-    public bool isSpawning {  get; private set; }
+    public bool IsSpawning {  get; private set; }
 
     [SerializeField] private WaveDefinition testWave;
 
@@ -29,9 +26,10 @@ public class WaveSpawner : MonoBehaviour
         StartCoroutine(SpawnWave(wave));
     }
 
+    // Spawning function. Was previously handled in GameManager and Wave classes.
     private IEnumerator SpawnWave(WaveDefinition wave)
     {
-        isSpawning = true;
+        IsSpawning = true;
 
         foreach( EnemySpawnEntry entry in wave.Enemies)
         {
@@ -43,16 +41,35 @@ public class WaveSpawner : MonoBehaviour
 
             for (int i = 0; i < entry.Amount; i++) {
 
-                Instantiate(entry.EnemyPrefab, GetSpawnPosition(), Quaternion.identity);
+                Instantiate(entry.EnemyPrefab, GetSpawnPosition(entry), Quaternion.identity);
 
                 yield return new WaitForSeconds(entry.SpawnInterval);
             }
         }
-        isSpawning = false;
+        IsSpawning = false;
     }
 
-    private Vector3 GetSpawnPosition()
+    // Getting initial stating position for Instantiation
+    private Vector3 GetSpawnPosition(EnemySpawnEntry entry)
     {
-        return transform.position;
+        switch (entry.SpawnPositionMode)
+        {
+            case SpawnPositionMode.RandomY:
+                return new Vector3(
+                    entry.SpawnX,
+                    Random.Range(entry.MinY, entry.MaxY),
+                    0f
+                );
+
+            case SpawnPositionMode.Fixed:
+            case SpawnPositionMode.Ground:
+
+            default:
+                return new Vector3(
+                    entry.SpawnX,
+                    entry.FixedY
+                );
+
+        }
     }
 }

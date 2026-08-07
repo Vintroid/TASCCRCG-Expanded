@@ -11,12 +11,13 @@ public class Gear : Enemy
     [Header("Characteristics")]
     [SerializeField] int baseHealth = 3;
     [SerializeField] int baseScoreValue = 100;
-    [SerializeField] float minMoveAmp = 0.25f; // Amp Tested Default 0.25f to 3f.
+    [SerializeField] float minMoveAmp = 0.5f; // Amp Tested Default 0.5f to 3f.
     [SerializeField] float maxMoveAmp = 3f;
     [SerializeField] float fireRate = 2.5f;
 
     private float time = 0f;
     private float amp;
+    private float verticalDirection;
     private float nextShotTime = 0f;
     private bool isShooting;
 
@@ -26,6 +27,9 @@ public class Gear : Enemy
         animator = this.GetComponent<Animator>();
         isShooting = false;
         nextShotTime = time + fireRate;
+
+        // Allow starting upwards or downwards
+        verticalDirection = UnityEngine.Random.value < 0.5f ? -1f : 1f;
     }
 
     // Start is called before the first frame update.
@@ -52,7 +56,7 @@ public class Gear : Enemy
 
             // Sin movement
             float x = 2 * time;
-            float y = (float)(amp * (Math.Sin(x)));
+            float y = (float)(amp * (Math.Sin(x))) * verticalDirection;
             animator.SetFloat("Vert_speed", y);
 
             // Moving in increments
