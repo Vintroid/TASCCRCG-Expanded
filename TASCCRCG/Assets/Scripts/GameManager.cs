@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
         int rng = UnityEngine.Random.Range(0, 100);
 
         // Mixed wave
-        if (rng <= 3 * difficulty + 40)
+        if (rng <= 3 * difficulty + 100)
         {
             waveType = "wrenchgear";
         }

@@ -10,7 +10,7 @@ public abstract class PawnBulletSpawner : MonoBehaviour
     [SerializeField] private float bulletCooldownTime = 0.25f;
 
     [Header("Pawn State")]
-    [SerializeField] public bool attachedToPlayer = false;
+    [SerializeField] private bool attachedToPlayer = false;
 
     private Player player;
     private float bulletCooldownTimer;

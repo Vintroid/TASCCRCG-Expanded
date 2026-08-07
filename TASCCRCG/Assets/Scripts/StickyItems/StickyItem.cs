@@ -8,13 +8,14 @@ public class StickyItem : MonoBehaviour
     public bool stuckToPlayer { get; private set; }
     private PawnBulletSpawner bulletSpawner;
 
-    void Awake()
+    private void Awake()
     {
         bulletSpawner = GetComponent<PawnBulletSpawner>();
 
-        if(bulletSpawner == null)
+        if(!TryGetComponent(out bulletSpawner))
         {
-            Debug.LogError($"{name}: StickyItem requires a PawnBulletSpawner component.");
+            Debug.LogError($"{name}: StickyItem requires a PawnBulletSpawner component.", this);
+            enabled = false;
         }
     }
 
@@ -49,31 +50,47 @@ public class StickyItem : MonoBehaviour
 
     private void TryAttach(GameObject other)
     {
-        Player player = other.GetComponent<Player>();
+        // Checking if sticky item to attach
+        StickyItem otherStickyItem = other.GetComponentInParent<StickyItem>();
 
-        // Pawn stuck to player
+        if (otherStickyItem != null) // Found a stickyitem to attach to
+        {
+            if (otherStickyItem == this) // Ignore own stickyItem object
+            {
+                return;
+            }
+
+            if (!otherStickyItem.stuckToPlayer) // Ignore items unattached
+            {
+                return;
+            }
+
+
+            Player parentPlayer = otherStickyItem.GetComponentInParent<Player>();
+
+            if (parentPlayer == null)
+            {
+                Debug.LogWarning(
+                    $"{otherStickyItem.name} is marked as attached, " +
+                    "but has no Player in its parent hierarchy.");
+
+                return;
+            }
+
+            Attach(parentPlayer, otherStickyItem.transform); // Attach
+
+            return;
+
+        }
+
+        // Pawn stuck to human directly check
+        Player player = other.GetComponentInParent<Player>();
+
         if(player != null)
         {
             Attach(player, player.transform);
-            return;
         }
-
-        StickyItem otherStickyItem = other.GetComponent<StickyItem>();
-
-        if(otherStickyItem == null || !otherStickyItem.stuckToPlayer)
-        {
-            return;
-        }
-
-        player = otherStickyItem.GetComponentInParent<Player>();
-
-        if(player == null)
-        {
-            return;
-        }
-
-        // Pawn stuck to another sticky item
-        Attach(player, otherStickyItem.transform);
+        
     }
 
     private void Attach(Player player, Transform newParent)
@@ -87,6 +104,6 @@ public class StickyItem : MonoBehaviour
     // What can hurt the sticky items?
     private static bool IsDamageSource(GameObject other)
     {
-        return other.CompareTag("EnemyBullet") || other.GetComponent<Enemy>() != null;
+        return other.GetComponentInParent<EnemyBullet>() != null || other.GetComponentInParent<Enemy>() != null;
     }
 }
