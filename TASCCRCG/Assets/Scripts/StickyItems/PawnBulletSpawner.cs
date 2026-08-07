@@ -19,6 +19,14 @@ public abstract class PawnBulletSpawner : MonoBehaviour
     {
         // Pawns are attached to player object
         player = GetComponentInParent<Player>();
+
+
+        bulletPool = FindAnyObjectByType<PlayerBulletPool>();
+
+        if (bulletPool == null)
+        {
+            Debug.LogError($"{name}: PlayerBulletPool was not found.",this);
+        }
     }
 
     protected virtual void Update()

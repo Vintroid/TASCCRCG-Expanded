@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerBullet : MonoBehaviour
 {
     [SerializeField] private float bulletSpeed = 5.0f;
-    [SerializeField] private float maxLifetime = 10f;
+    [SerializeField] private float maxLifetime = 5f;
     private float lifetimeTimer;
     public Vector3 direction;
     public PlayerBulletType BulletType { get; private set; }

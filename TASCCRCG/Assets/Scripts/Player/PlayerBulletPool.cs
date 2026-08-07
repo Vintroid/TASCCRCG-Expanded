@@ -10,8 +10,8 @@ public class PlayerBulletPool : MonoBehaviour
     [SerializeField] private PlayerBullet diagonalBulletPrefab;
 
     [Header("Initial Pool Sizes")]
-    [SerializeField] private int straightPoolSize = 20;
-    [SerializeField] private int diagonalPoolSize = 20;
+    [SerializeField] private int straightPoolSize = 30;
+    [SerializeField] private int diagonalPoolSize = 40;
 
     // Using queues to store bullet instances
     private readonly Queue<PlayerBullet> straightPool = new();
@@ -62,12 +62,6 @@ public class PlayerBulletPool : MonoBehaviour
     {
         PlayerBullet bullet;
 
-        if(pool == null)
-        {
-            Debug.LogError($"{pool} is null. Cannot retrive bullet.");
-            return null;
-        }
-
         if(pool.Count > 0)
         {
             bullet = pool.Dequeue();
@@ -77,7 +71,7 @@ public class PlayerBulletPool : MonoBehaviour
             bullet = CreateBullet(prefab); // Empty pool, need to Instantiate
         }
 
-        bullet.gameObject.SetActive(false);
+        bullet.gameObject.SetActive(true);
         return bullet;
     }
 
