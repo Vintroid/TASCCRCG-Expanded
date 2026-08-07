@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
 
                 case "wrenchgear":
                     wrenchGearWave.Wave();
-                    playerManager.SetWave(waveCounter);
+                    playerManager.SetWave(waveCounter);                                                                                                                                                                                                                                                                                              
                     break;
 
                 case "biggear":
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+                                
     public void EnemyDown(GameObject enemy)
     {
         // Enemy transform
