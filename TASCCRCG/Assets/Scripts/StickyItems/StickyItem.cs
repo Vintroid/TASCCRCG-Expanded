@@ -7,6 +7,7 @@ public class StickyItem : MonoBehaviour
 {
     public bool stuckToPlayer { get; private set; }
     private PawnBulletSpawner bulletSpawner;
+    private Player parentPlayer;
 
     private void Awake()
     {
@@ -36,12 +37,20 @@ public class StickyItem : MonoBehaviour
 
     private void HandleInteraction(GameObject other)
     {
+        // Pawns attach to player
         if (!stuckToPlayer)
         {
             TryAttach(other);
             return;
         }
 
+        // Pawns can collect powerups
+        if(parentPlayer != null && parentPlayer.TryCollectPowerUp(other))
+        {
+            return;
+        }
+
+        // Pawns can disappear when hurt by objects
         if (IsDamageSource(other))
         {
             Destroy(gameObject);
@@ -77,7 +86,8 @@ public class StickyItem : MonoBehaviour
                 return;
             }
 
-            Attach(parentPlayer, otherStickyItem.transform); // Attach
+            Attach(parentPlayer, otherStickyItem.transform); // Attach stickyitem to stickyitem
+            parentPlayer.AddScore(10); // More points when chaining pawns
 
             return;
 
@@ -89,6 +99,7 @@ public class StickyItem : MonoBehaviour
         if(player != null)
         {
             Attach(player, player.transform);
+            parentPlayer.AddScore(5);
         }
         
     }
@@ -97,7 +108,7 @@ public class StickyItem : MonoBehaviour
     {
         transform.SetParent(newParent, true);
         stuckToPlayer = true;
-
+        parentPlayer = player; // Useful for pawns to reference player. Can pick powerups!
         bulletSpawner.AttachToPlayer(player);
     }
 

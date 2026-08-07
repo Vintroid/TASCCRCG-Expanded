@@ -123,19 +123,11 @@ public abstract class Player : MonoBehaviour
 
     private void HandleInteraction(GameObject other)
     {
-        // hat collisions
-        if (other.CompareTag("bishopPowerUp"))
+        if (TryCollectPowerUp(other))
         {
-            CollectPowerUp(other, "bishop");
+            return;
         }
-        if (other.CompareTag("rookPowerUp"))
-        {
-            CollectPowerUp(other, "rook");
-        }
-        if (other.CompareTag("queenPowerUp"))
-        {
-            CollectPowerUp(other, "queen");
-        }
+        
         // enemy collisions (take damage)
         if (IsDamageSource(other) && damageCooldownTimer <= 0)
         {
@@ -143,6 +135,33 @@ public abstract class Player : MonoBehaviour
             StartCoroutine(OnHitRoutine());
         }
        
+    }
+    
+    // Public powerup collector function. Returns if powerup collected or not.
+    public bool TryCollectPowerUp(GameObject powerUp)
+    {
+        if (powerUp == null || playerManager == null)
+        {
+            return false;
+        }
+        // hat collisions
+        if (powerUp.CompareTag("bishopPowerUp"))
+        {
+            CollectPowerUp(powerUp, "bishop");
+            return true;
+        }
+        if (powerUp.CompareTag("rookPowerUp"))
+        {
+            CollectPowerUp(powerUp, "rook");
+            return true;
+        }
+        if (powerUp.CompareTag("queenPowerUp"))
+        {
+            CollectPowerUp(powerUp, "queen");
+            return true;
+        }
+
+        return false;
     }
 
     private void CollectPowerUp(GameObject powerUp, string mode)
@@ -181,6 +200,15 @@ public abstract class Player : MonoBehaviour
             yield return new WaitForSeconds(damageFlashDuration);
             spriteRenderer.color = originalColor;
             yield return new WaitForSeconds(damageFlashDuration);
+        }
+    }
+
+    // Globally accessible score function forwarding to playerManager
+    public void AddScore(int amount)
+    {
+        if(playerManager != null)
+        {
+            playerManager.AddScore(amount);
         }
     }
 }
