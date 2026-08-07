@@ -40,7 +40,7 @@ public class EnemyBulletPool : MonoBehaviour
 
     private EnemyBullet CreateBullet()
     {
-        EnemyBullet bullet = Instantiate(prefab);
+        EnemyBullet bullet = Instantiate(prefab, transform);
 
         // We want the bullet to have access to the pool.
         bullet.SetPool(pool);
