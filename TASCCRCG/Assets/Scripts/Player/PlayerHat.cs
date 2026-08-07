@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerHat : MonoBehaviour
 {
-    [SerializeField] private playerManager playerManager;
+    [SerializeField] private PlayerManager playerManager;
 
     /* hat collisions have been disabled between:
         hat and hat
@@ -19,7 +19,7 @@ public class PlayerHat : MonoBehaviour
         if (other.gameObject.CompareTag("EnemyBullet") || other.gameObject.CompareTag("Wrench") || other.gameObject.CompareTag("Gear") || other.gameObject.CompareTag("Big Gear"))
         {
             this.gameObject.SetActive(false);
-            playerManager.ChangeMode("basic");
+            playerManager.ChangeMode(PlayerMode.Basic);
         }
     }
     private void OnCollisionEnter2D(Collision2D other)
@@ -27,7 +27,7 @@ public class PlayerHat : MonoBehaviour
         if (other.gameObject.CompareTag("EnemyBullet") || other.gameObject.CompareTag("Wrench") || other.gameObject.CompareTag("Gear") || other.gameObject.CompareTag("Big Gear"))
         {
             this.gameObject.SetActive(false);
-            playerManager.ChangeMode("basic");
+            playerManager.ChangeMode(PlayerMode.Basic);
         }
     }
 }

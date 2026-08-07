@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerBulletSpawner : MonoBehaviour
 {
-    private playerManager playerManager;
+    private PlayerManager playerManager;
     private Player player;
 
     [Header("Bullet Prefabs")]
@@ -30,7 +30,7 @@ public class PlayerBulletSpawner : MonoBehaviour
 
     private void Start()
     {
-        playerManager = FindAnyObjectByType<playerManager>();
+        playerManager = FindAnyObjectByType<PlayerManager>();
 
         if(playerManager == null)
         {
@@ -70,18 +70,18 @@ public class PlayerBulletSpawner : MonoBehaviour
     {
         bulletCooldownTimer = bulletCooldownTime;
 
-        if (playerManager.mode == "basic")
+        if (playerManager.Mode == PlayerMode.Basic)
         {
             SpawnBullet(straightPlayerBullet, Vector3.right, 0f);
         }
-        if (playerManager.mode == "rook" || playerManager.mode == "queen")
+        if (playerManager.Mode == PlayerMode.Rook || playerManager.Mode == PlayerMode.Queen)
         {
             SpawnBullet(straightPlayerBullet, Vector3.right, 0f);
             SpawnBullet(straightPlayerBullet, Vector3.up, 90f);
             SpawnBullet(straightPlayerBullet, Vector3.left, 180f);
             SpawnBullet(straightPlayerBullet, Vector3.down, 270f);
         }
-        if (playerManager.mode == "bishop" || playerManager.mode == "queen")
+        if (playerManager.Mode == PlayerMode.Bishop || playerManager.Mode == PlayerMode.Queen)
         {
             SpawnBullet(diagonalPlayerBullet, (Vector3.right + Vector3.up).normalized, 0f);
             SpawnBullet(diagonalPlayerBullet, (Vector3.left + Vector3.up).normalized, 90f);

@@ -19,7 +19,7 @@ public class GameManagerLevel1 : MonoBehaviour
     public float powerupTimer = 3f;
 
     // Player Manager
-    [SerializeField] public playerManager playerManager;
+    [SerializeField] public PlayerManager playerManager;
 
     // Prefabs
     [SerializeField] GameObject bishopPowerup;
@@ -55,22 +55,22 @@ public class GameManagerLevel1 : MonoBehaviour
             {
                 case "wrench":
                     wrenchWave.Wave();
-                    playerManager.Wave(waveCounter);
+                    playerManager.SetWave(waveCounter);
                     break;
 
                 case "gear":
                     gearWave.Wave();
-                    playerManager.Wave(waveCounter);
+                    playerManager.SetWave(waveCounter);
                     break;
 
                 case "wrenchgear":
                     wrenchGearWave.Wave();
-                    playerManager.Wave(waveCounter);
+                    playerManager.SetWave(waveCounter);
                     break;
 
                 case "biggear":
                     bigGearWave.Wave();
-                    playerManager.Wave(waveCounter);
+                    playerManager.SetWave(waveCounter);
                     break;
 
             }

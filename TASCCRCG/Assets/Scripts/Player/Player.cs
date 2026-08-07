@@ -23,7 +23,7 @@ public abstract class Player : MonoBehaviour
     [SerializeField] private float damageFlashDuration = 0.1f;
     private float damageCooldownTimer;
 
-    protected playerManager playerManager;
+    protected PlayerManager playerManager;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
 
@@ -32,10 +32,13 @@ public abstract class Player : MonoBehaviour
     protected virtual void Awake()
     {
         // playerManager script reference
-        playerManager = FindAnyObjectByType<playerManager>();
+        playerManager = FindAnyObjectByType<PlayerManager>();
+
         if (playerManager == null)
         {
-            Debug.LogError($"{name}: playerManager was not found.");
+            Debug.LogError($"{name}: PlayerManager was not found.",this);
+            enabled = false;
+            return;
         }
 
         playerManager.OnModeChanged.AddListener(HandleModeChanged);
@@ -57,7 +60,7 @@ public abstract class Player : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (playerManager != null && playerManager.gameOver)
+        if (playerManager != null && playerManager.IsGameOver)
         {
             this.gameObject.SetActive(false);
         }
@@ -74,9 +77,9 @@ public abstract class Player : MonoBehaviour
         }
 
         // Can setActive hats comparing playerManager mode
-        bishopHat.SetActive(playerManager.mode == "bishop");
-        rookHat.SetActive(playerManager.mode == "rook");
-        queenHat.SetActive(playerManager.mode == "queen");
+        bishopHat.SetActive(playerManager.Mode == PlayerMode.Bishop);
+        rookHat.SetActive(playerManager.Mode == PlayerMode.Rook);
+        queenHat.SetActive(playerManager.Mode == PlayerMode.Queen);
 
     }
 
@@ -154,24 +157,24 @@ public abstract class Player : MonoBehaviour
         // hat collisions
         if (powerUp.CompareTag("bishopPowerUp"))
         {
-            CollectPowerUp(powerUp, "bishop");
+            CollectPowerUp(powerUp, PlayerMode.Bishop);
             return true;
         }
         if (powerUp.CompareTag("rookPowerUp"))
         {
-            CollectPowerUp(powerUp, "rook");
+            CollectPowerUp(powerUp, PlayerMode.Rook);
             return true;
         }
         if (powerUp.CompareTag("queenPowerUp"))
         {
-            CollectPowerUp(powerUp, "queen");
+            CollectPowerUp(powerUp, PlayerMode.Queen);
             return true;
         }
 
         return false;
     }
 
-    private void CollectPowerUp(GameObject powerUp, string mode)
+    private void CollectPowerUp(GameObject powerUp, PlayerMode mode)
     {
         playerManager.ChangeMode(mode);
         playerManager.AddScore(10);
@@ -216,6 +219,15 @@ public abstract class Player : MonoBehaviour
         if(playerManager != null)
         {
             playerManager.AddScore(amount);
+        }
+    }
+
+    // When player is destroyed
+    protected virtual void OnDestroy()
+    {
+        if(playerManager != null)
+        {
+            playerManager.OnModeChanged.RemoveListener(HandleModeChanged);
         }
     }
 }

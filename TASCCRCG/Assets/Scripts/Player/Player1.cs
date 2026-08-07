@@ -80,7 +80,7 @@ public class Player1 : Player
 
             case <= 0:
                 life1.SetActive(false);
-                playerManager.GameOver();
+                playerManager.TriggerGameOver();
                 break;
            
         }
