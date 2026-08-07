@@ -7,13 +7,9 @@ public class PlayerBulletSpawner : MonoBehaviour
 {
     private PlayerManager playerManager;
     private Player player;
-
-    [Header("Bullet Prefabs")]
-    [SerializeField] private GameObject straightPlayerBullet;
-    [SerializeField] private GameObject diagonalPlayerBullet;
+    [SerializeField] private PlayerBulletPool bulletPool;
 
     [Header("Fields")]
-    [SerializeField] private float bulletTime = 10.0f;
     [SerializeField] private float bulletCooldownTime = 0.25f;
     private float bulletCooldownTimer = 0.0f;
 
@@ -25,6 +21,12 @@ public class PlayerBulletSpawner : MonoBehaviour
         if(player == null)
         {
             Debug.LogError($"{name}: PlayerBulletSpawner requires a Player component on the same GameObject.");
+        }
+
+        bulletPool = FindAnyObjectByType<PlayerBulletPool>();
+        if(bulletPool == null)
+        {
+            Debug.LogError($"{name}: PlayerBulletPoool not assigned in editor",this);
         }
     }
 
@@ -72,31 +74,31 @@ public class PlayerBulletSpawner : MonoBehaviour
 
         if (playerManager.Mode == PlayerMode.Basic)
         {
-            SpawnBullet(straightPlayerBullet, Vector3.right, 0f);
+            SpawnBullet(PlayerBulletType.Straight, Vector3.right, 0f);
         }
         if (playerManager.Mode == PlayerMode.Rook || playerManager.Mode == PlayerMode.Queen)
         {
-            SpawnBullet(straightPlayerBullet, Vector3.right, 0f);
-            SpawnBullet(straightPlayerBullet, Vector3.up, 90f);
-            SpawnBullet(straightPlayerBullet, Vector3.left, 180f);
-            SpawnBullet(straightPlayerBullet, Vector3.down, 270f);
+            SpawnBullet(PlayerBulletType.Straight, Vector3.right, 0f);
+            SpawnBullet(PlayerBulletType.Straight, Vector3.up, 90f);
+            SpawnBullet(PlayerBulletType.Straight, Vector3.left, 180f);
+            SpawnBullet(PlayerBulletType.Straight, Vector3.down, 270f);
         }
         if (playerManager.Mode == PlayerMode.Bishop || playerManager.Mode == PlayerMode.Queen)
         {
-            SpawnBullet(diagonalPlayerBullet, (Vector3.right + Vector3.up).normalized, 0f);
-            SpawnBullet(diagonalPlayerBullet, (Vector3.left + Vector3.up).normalized, 90f);
-            SpawnBullet(diagonalPlayerBullet, (Vector3.left + Vector3.down).normalized, 180f);
-            SpawnBullet(diagonalPlayerBullet, (Vector3.right + Vector3.down).normalized, 270f);
+            SpawnBullet(PlayerBulletType.Diagonal, (Vector3.right + Vector3.up).normalized, 0f);
+            SpawnBullet(PlayerBulletType.Diagonal, (Vector3.left + Vector3.up).normalized, 90f);
+            SpawnBullet(PlayerBulletType.Diagonal, (Vector3.left + Vector3.down).normalized, 180f);
+            SpawnBullet(PlayerBulletType.Diagonal, (Vector3.right + Vector3.down).normalized, 270f);
         }
     }
 
-    private void SpawnBullet(GameObject bulletPrefab, Vector3 direction, float angle)
+    private void SpawnBullet(PlayerBulletType bulletType, Vector3 direction, float angle)
     {
-        GameObject bulletObject = Instantiate(bulletPrefab, transform.position, Quaternion.Euler(0, 0, angle));
+        if(bulletPool == null)
+        {
+            return;
+        }
 
-        PlayerBullet bullet = bulletObject.GetComponent<PlayerBullet>();
-        bullet.Initialize(direction);
-
-        Destroy(bulletObject, bulletTime);
+        bulletPool.SpawnBullet(bulletType,transform.position,direction,angle);
     }
 }

@@ -5,15 +5,15 @@ using UnityEngine;
 public abstract class PawnBulletSpawner : MonoBehaviour
 {
     [Header("Bullet Fields")]
-    [SerializeField] private GameObject diagonalPlayerBullet;
-    [SerializeField] private float bulletTime = 2f;
     [SerializeField] private float bulletCooldownTime = 0.25f;
+    private float bulletCooldownTimer;
+
 
     [Header("Pawn State")]
     [SerializeField] private bool attachedToPlayer = false;
 
     private Player player;
-    private float bulletCooldownTimer;
+    [SerializeField] private PlayerBulletPool bulletPool;
 
     protected virtual void Awake()
     {
@@ -60,20 +60,12 @@ public abstract class PawnBulletSpawner : MonoBehaviour
 
     protected void SpawnBullet(Vector3 direction, float angle)
     {
-        GameObject bulletObject = Instantiate(diagonalPlayerBullet, transform.position, Quaternion.Euler(0, 0, angle));
-
-        PlayerBullet bullet = bulletObject.GetComponent<PlayerBullet>();
-
-        if(bullet == null)
+        if (bulletPool == null)
         {
-            Debug.LogError($"{name}: Bullet prefab has no PlayerBullet component.");
-
-            Destroy(bulletObject);
             return;
         }
 
-        bullet.Initialize(direction);
-        Destroy(bulletObject, bulletTime); // Set the bullet to die after a set time.
+        bulletPool.SpawnBullet(PlayerBulletType.Diagonal,transform.position,direction,angle);
     }
 
     public void AttachToPlayer(Player attachedPlayer)
