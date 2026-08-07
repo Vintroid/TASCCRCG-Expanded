@@ -78,10 +78,6 @@ public class PlayerManager : MonoBehaviour
         UpdateWaveText();
         PlayWaveAudio();
         AddScore(10);
-
-
-
-
     }
 
     private void PlayWaveAudio()
@@ -131,10 +127,16 @@ public class PlayerManager : MonoBehaviour
 
     public void ChangeMode(PlayerMode newMode)
     {
+        if(Mode == newMode)
+        {
+            return;
+        }
+
         Mode = newMode;
+
         Debug.Log($"Player mode changed to: {Mode}");
 
-        OnModeChanged.Invoke();
+        OnModeChanged?.Invoke();
     }
 
     private void UpdateScoreText()
