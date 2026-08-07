@@ -1891,7 +1891,7 @@ GameObject:
   - component: {fileID: 744411182}
   m_Layer: 12
   m_Name: rook2
-  m_TagString: rookPowerUp
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2373,7 +2373,7 @@ GameObject:
   - component: {fileID: 937053564}
   m_Layer: 12
   m_Name: queen2
-  m_TagString: queenPowerUp
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3374,7 +3374,7 @@ GameObject:
   - component: {fileID: 1921525950}
   m_Layer: 12
   m_Name: bishop2
-  m_TagString: bishopPowerUp
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3842,7 +3842,7 @@ GameObject:
   - component: {fileID: 6959408735943796071}
   m_Layer: 12
   m_Name: queen1
-  m_TagString: queenPowerUp
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3876,7 +3876,7 @@ GameObject:
   - component: {fileID: 6725482649222232935}
   m_Layer: 12
   m_Name: rook1
-  m_TagString: rookPowerUp
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4130,7 +4130,7 @@ GameObject:
   - component: {fileID: 9079860387887413382}
   m_Layer: 12
   m_Name: bishop1
-  m_TagString: bishopPowerUp
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

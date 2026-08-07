@@ -144,6 +144,13 @@ public abstract class Player : MonoBehaviour
         {
             return false;
         }
+
+        // Powerups already attached to player are ignored.
+        if (powerUp.GetComponentInParent<Player>() != null)
+        {
+            return false;
+        }
+
         // hat collisions
         if (powerUp.CompareTag("bishopPowerUp"))
         {
