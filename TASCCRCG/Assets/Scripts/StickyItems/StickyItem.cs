@@ -8,14 +8,22 @@ public class StickyItem : MonoBehaviour
     public bool stuckToPlayer { get; private set; }
     private PawnBulletSpawner bulletSpawner;
     private Player parentPlayer;
+    private ScoreManager scoreManager;
 
     private void Awake()
     {
         bulletSpawner = GetComponent<PawnBulletSpawner>();
+        scoreManager = GetComponent<ScoreManager>();
 
         if(!TryGetComponent(out bulletSpawner))
         {
             Debug.LogError($"{name}: StickyItem requires a PawnBulletSpawner component.", this);
+            enabled = false;
+        }
+
+        if (!TryGetComponent(out scoreManager))
+        {
+            Debug.LogError($"{name}: StickyItem requires a ScoreManager component.", this);
             enabled = false;
         }
     }
@@ -87,7 +95,7 @@ public class StickyItem : MonoBehaviour
             }
 
             Attach(parentPlayer, otherStickyItem.transform); // Attach stickyitem to stickyitem
-            parentPlayer.AddScore(10); // More points when chaining pawns
+            scoreManager.AddScore(10); // More points when chaining pawns
 
             return;
 
@@ -99,7 +107,7 @@ public class StickyItem : MonoBehaviour
         if(player != null)
         {
             Attach(player, player.transform);
-            parentPlayer.AddScore(5);
+            scoreManager.AddScore(5);
         }
         
     }

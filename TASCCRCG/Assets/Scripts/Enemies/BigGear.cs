@@ -18,7 +18,7 @@ public class BigGear : Enemy
     protected override void Start()
     {
         base.Start();
-        health = baseHealth + gameManager.difficulty;
+        health = baseHealth + difficultyManager.CurrentDifficulty;
         scoreValue = baseScoreValue;
         isShooting = false;
     }
@@ -53,7 +53,7 @@ public class BigGear : Enemy
             SpawnProjectile(ProjectileType.Saw, Vector3.up + Vector3.left, 160);
             SpawnProjectile(ProjectileType.Saw, Vector3.left, 180);
 
-            gameManager.playerManager.AddScore(75);
+            scoreManager.AddScore(75);
             yield return new WaitForSeconds(0.33f);
         }
 

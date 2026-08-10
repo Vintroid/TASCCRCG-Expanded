@@ -24,6 +24,7 @@ public abstract class Player : MonoBehaviour
     private float damageCooldownTimer;
 
     protected PlayerManager playerManager;
+    protected ScoreManager scoreManager;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
 
@@ -31,6 +32,8 @@ public abstract class Player : MonoBehaviour
 
     protected virtual void Awake()
     {
+        scoreManager = FindAnyObjectByType<ScoreManager>();
+
         // playerManager script reference
         playerManager = FindAnyObjectByType<PlayerManager>();
 
@@ -177,7 +180,7 @@ public abstract class Player : MonoBehaviour
     private void CollectPowerUp(GameObject powerUp, PlayerMode mode)
     {
         playerManager.ChangeMode(mode);
-        playerManager.AddScore(10);
+        scoreManager.AddScore(10);
         Destroy(powerUp);
     }
 
@@ -210,15 +213,6 @@ public abstract class Player : MonoBehaviour
             yield return new WaitForSeconds(damageFlashDuration);
             spriteRenderer.color = originalColor;
             yield return new WaitForSeconds(damageFlashDuration);
-        }
-    }
-
-    // Globally accessible score function forwarding to playerManager
-    public void AddScore(int amount)
-    {
-        if(playerManager != null)
-        {
-            playerManager.AddScore(amount);
         }
     }
 

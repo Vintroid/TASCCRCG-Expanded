@@ -14,7 +14,7 @@ public class Wrench : Enemy
     protected override void Start()
     {
         base.Start();
-        health = baseHealth + gameManager.difficulty;
+        health = baseHealth + difficultyManager.CurrentDifficulty;
         scoreValue = baseScoreValue;
     }
 

@@ -5,17 +5,36 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     // Enemy Fields
-    protected SurvivalGameManager gameManager;
     private float damageFlashDuration = 0.1f;
     private SpriteRenderer spriteRenderer;
+    protected EnemyLootManager lootManager;
+    protected ScoreManager scoreManager;
+    protected DifficultyManager difficultyManager;
     protected bool isFlashing = false;
     protected int health;
     protected int scoreValue;
 
     protected virtual void Awake()
     {
-        gameManager = GameObject.FindAnyObjectByType<SurvivalGameManager>();
+        lootManager = GameObject.FindAnyObjectByType<EnemyLootManager>();
+        scoreManager = GameObject.FindAnyObjectByType<ScoreManager>();
+        difficultyManager = FindAnyObjectByType<DifficultyManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if(lootManager == null)
+        {
+            Debug.LogError($"{name}: LootManager was not found.", this);
+        }
+
+        if (scoreManager == null)
+        {
+            Debug.LogError($"{name}: ScoreManager was not found.", this);
+        }
+
+        if (difficultyManager == null)
+        {
+            Debug.LogError($"{name}: DifficultyManager was not found.", this);
+        }
     }
 
     protected virtual void Start()
@@ -50,11 +69,9 @@ public class Enemy : MonoBehaviour
     // Behaviour when the enemy is destroyed
     protected virtual void OnDestroyed()
     {
-        gameManager.playerManager.AddScore(scoreValue);
-
         // Powerups and other effects when destroyed
-        gameManager.EnemyDown(this.gameObject);
-        GameObject.Destroy(this.gameObject);
+        lootManager.EnemyDown(gameObject, scoreValue);
+        Destroy(this.gameObject);
     }
 
     private IEnumerator DamageFlashCoroutine()

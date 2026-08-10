@@ -36,7 +36,7 @@ public class Gear : Enemy
     protected override void Start()
     {
         base.Start();
-        health = baseHealth + gameManager.difficulty;
+        health = baseHealth + difficultyManager.CurrentDifficulty;
         scoreValue = baseScoreValue;
 
         // Random amplitude
@@ -103,6 +103,6 @@ public class Gear : Enemy
         SpawnProjectile(ProjectileType.Saw, Vector3.down, 270);
         SpawnProjectile(ProjectileType.Saw, Vector3.down + Vector3.right, 315);
 
-        gameManager.playerManager.AddScore(40);
+        scoreManager.AddScore(40);
     }
 }
