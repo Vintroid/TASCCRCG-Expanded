@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class StickyItem : MonoBehaviour
 {
-    public bool stuckToPlayer { get; private set; }
+    public bool StuckToPlayer { get; private set; }
     private PawnBulletSpawner bulletSpawner;
     private Player parentPlayer;
     private ScoreManager scoreManager;
+
+    [SerializeField] private float looseLifeTime = 4f; // Time until destroy when unattached.
 
     private void Awake()
     {
@@ -20,6 +22,17 @@ public class StickyItem : MonoBehaviour
             Debug.LogError($"{name}: ScoreManager was not found.", this);
             enabled = false;
             return;
+        }
+
+        // Destroy pawn after timer expires when unattached
+        Invoke(nameof(ExpireIfLoose), looseLifeTime);
+    }
+
+    private void ExpireIfLoose()
+    {
+        if (!StuckToPlayer)
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -41,7 +54,7 @@ public class StickyItem : MonoBehaviour
     private void HandleInteraction(GameObject other)
     {
         // Pawns attach to player
-        if (!stuckToPlayer)
+        if (!StuckToPlayer)
         {
             TryAttach(other);
             return;
@@ -72,7 +85,7 @@ public class StickyItem : MonoBehaviour
                 return;
             }
 
-            if (!otherStickyItem.stuckToPlayer) // Ignore items unattached
+            if (!otherStickyItem.StuckToPlayer) // Ignore items unattached
             {
                 return;
             }
@@ -110,7 +123,9 @@ public class StickyItem : MonoBehaviour
     private void Attach(Player player, Transform newParent)
     {
         transform.SetParent(newParent, true);
-        stuckToPlayer = true;
+        StuckToPlayer = true;
+        CancelInvoke(nameof(ExpireIfLoose)); // No longer need to destroy pawn if attached.
+
         parentPlayer = player; // Useful for pawns to reference player. Can pick powerups!
         bulletSpawner.AttachToPlayer(player);
     }

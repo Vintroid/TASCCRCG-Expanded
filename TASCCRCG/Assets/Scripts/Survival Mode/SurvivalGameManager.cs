@@ -6,6 +6,17 @@ using UnityEngine;
 
 public class SurvivalGameManager : MonoBehaviour
 {
+    // Probability of enemies waves now uses weights
+    [System.Serializable]
+    private class WaveWeights 
+    {
+        [Min(0)] public int wrench;
+        [Min(0)] public int gear;
+        [Min(0)] public int wrenchGear;
+        [Min(0)] public int bigGear;
+
+        public int TotalWeight => wrench + gear + wrenchGear + bigGear;
+    }
     [Header("Survival Fields")]
     [SerializeField] private float difficultyInterval = 15f;
     [SerializeField] private int maxDifficulty = 7;
@@ -25,6 +36,10 @@ public class SurvivalGameManager : MonoBehaviour
     [SerializeField] WaveDefinition gearWave;
     [SerializeField] WaveDefinition wrenchGearWave;
     [SerializeField] WaveDefinition bigGearWave;
+
+    // Array of weights for wave probabilities.
+    [Header("Wave Selection")]
+    [SerializeField] private WaveWeights[] waveWeightsByTier = new WaveWeights[8];
 
     // Update is called once per frame
     void Update()
@@ -66,24 +81,49 @@ public class SurvivalGameManager : MonoBehaviour
     // Currently based on random-number generator selection.
     private WaveDefinition SelectWave()
     {
-        int rng = UnityEngine.Random.Range(0, 100);
+        if(waveWeightsByTier == null || waveWeightsByTier.Length == 0)
+        {
+            Debug.LogWarning($"{name}: No Survival wave weights configured", this);
+            return wrenchWave;
+        }
 
-        // Mixed wave
-        if (rng < 3 * difficultyTier + 15)
+        int tierIndex = Mathf.Clamp(difficultyTier, 0, waveWeightsByTier.Length - 1);
+
+        WaveWeights weights = waveWeightsByTier[tierIndex];
+
+        if(weights == null || weights.TotalWeight <= 0)
+        {
+            Debug.LogWarning($"{name}: Tier {tierIndex} has no valid wave weights.",this);
+            return wrenchWave;
+        }
+
+        // Rng for waves, but take it depending of total weight.
+        int roll = UnityEngine.Random.Range(0, weights.TotalWeight);
+
+        // For each check we remove from the roll so that the check are independent.
+        if(roll < weights.wrench)
+        {
+            return wrenchWave;
+        }
+
+        roll -= weights.wrench;
+
+        if(roll < weights.gear)
+        {
+            return gearWave;
+        }
+
+        roll -= weights.gear;
+
+        if(roll < weights.wrenchGear)
         {
             return wrenchGearWave;
         }
 
-        // Solo waves
-        if (rng <= 3 * difficultyTier + 20)
-        {
-            return bigGearWave;
-        }
+        return bigGearWave;
 
-        if (rng <= 5 * difficultyTier + 20)
-        {
-            return gearWave;
-        }
+
+        
 
        
         return wrenchWave;

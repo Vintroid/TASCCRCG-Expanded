@@ -1445,6 +1445,39 @@ MonoBehaviour:
   gearWave: {fileID: 11400000, guid: 9c3dbc69952e65641aabba5638ef713c, type: 2}
   wrenchGearWave: {fileID: 11400000, guid: d5eecc41cc9fd7a46a46d9ca4c645f91, type: 2}
   bigGearWave: {fileID: 11400000, guid: f9faf9e290f62964a8b5ec414dd58980, type: 2}
+  waveWeightsByTier:
+  - wrench: 100
+    gear: 0
+    wrenchGear: 0
+    bigGear: 0
+  - wrench: 75
+    gear: 25
+    wrenchGear: 0
+    bigGear: 0
+  - wrench: 55
+    gear: 30
+    wrenchGear: 15
+    bigGear: 0
+  - wrench: 40
+    gear: 30
+    wrenchGear: 20
+    bigGear: 10
+  - wrench: 30
+    gear: 30
+    wrenchGear: 25
+    bigGear: 15
+  - wrench: 25
+    gear: 25
+    wrenchGear: 30
+    bigGear: 20
+  - wrench: 20
+    gear: 25
+    wrenchGear: 35
+    bigGear: 20
+  - wrench: 15
+    gear: 20
+    wrenchGear: 40
+    bigGear: 25
 --- !u!4 &467110896
 Transform:
   m_ObjectHideFlags: 0
@@ -3440,6 +3473,7 @@ MonoBehaviour:
   powerupRate: 2
   weaponRate: 2
   powerupTimer: 3
+  pawnTimer: 4
   scoreManager: {fileID: 669974458}
 --- !u!4 &1654252048
 Transform:
