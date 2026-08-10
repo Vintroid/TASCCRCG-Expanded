@@ -121,12 +121,6 @@ public class SurvivalGameManager : MonoBehaviour
         }
 
         return bigGearWave;
-
-
-        
-
-       
-        return wrenchWave;
     }
 
     private void StartNextWave()

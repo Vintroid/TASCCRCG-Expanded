@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73567a122e360244386e7131dbade13f, type: 3}
+  m_Name: PartyMix
+  m_EditorClassIdentifier: 
+  enemies:
+  - enemyPrefab: {fileID: 5197093029153576782, guid: adafd97153f9d2f41a45bc40f2281779, type: 3}
+    amount: 5
+    spawnInterval: 0.75
+    spawnPositionMode: 1
+    spawnX: 10
+    fixedY: 0
+    minY: 0
+    maxY: 0
+    scaleAmountWithDifficulty: 0
+    tiersPerExtraEnemy: 0
+    maxExtraEnemies: 0
+  - enemyPrefab: {fileID: 1407386639029919473, guid: 79d23e8fa8204a64db17d8db031028fd, type: 3}
+    amount: 1
+    spawnInterval: 0
+    spawnPositionMode: 2
+    spawnX: 7.5
+    fixedY: -3.3
+    minY: 0
+    maxY: 0
+    scaleAmountWithDifficulty: 0
+    tiersPerExtraEnemy: 0
+    maxExtraEnemies: 0
+  - enemyPrefab: {fileID: 3703071966299524341, guid: 4c9f7325ea4edca4a8196d4fcf1d17b8, type: 3}
+    amount: 2
+    spawnInterval: 0.75
+    spawnPositionMode: 0
+    spawnX: 7.5
+    fixedY: 0
+    minY: 0
+    maxY: 0
+    scaleAmountWithDifficulty: 0
+    tiersPerExtraEnemy: 0
+    maxExtraEnemies: 0
