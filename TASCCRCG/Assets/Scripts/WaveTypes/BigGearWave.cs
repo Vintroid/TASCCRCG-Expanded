@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class BigGearWave : MonoBehaviour
 {
-    GameManager gameManager;
+    SurvivalGameManager gameManager;
     [SerializeField] GameObject bigGear;
 
     // Start is called before the first frame update
     void Awake()
     {
-        gameManager = this.GetComponent<GameManager>();
+        gameManager = this.GetComponent<SurvivalGameManager>();
     }
 
     public void Wave()

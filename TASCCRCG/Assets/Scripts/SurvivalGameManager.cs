@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 //using static UnityEditor.PlayerSettings;
 
-public class GameManager : MonoBehaviour
+public class SurvivalGameManager : MonoBehaviour
 {
-    [Header("Game Fields")]
-    public float timer = 0f;
+    [Header("Survival Fields")]
+    [SerializeField] private float difficultyInterval = 15f;
+    [SerializeField] private int maxDifficulty = 7;
     public int difficulty = 0;
+    public float survivalTimer = 0f;
     public float waveTimer = 8f;
     public float waveRate = 9f;
     public int powerupRate = 2;
@@ -18,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Managers")]
     [SerializeField] public PlayerManager playerManager;
+    [SerializeField] private WaveSpawner waveSpawner;
 
     [Header("Prefabs")]
     [SerializeField] GameObject bishopPowerup;
@@ -32,31 +35,43 @@ public class GameManager : MonoBehaviour
     [SerializeField] WaveDefinition wrenchGearWave;
     [SerializeField] WaveDefinition bigGearWave;
 
-    [SerializeField] private WaveSpawner waveSpawner;
-
 
 
     // Update is called once per frame
     void Update()
     {
-        // Updating fields with current game time
-        timer += Time.deltaTime;
-        waveTimer += Time.deltaTime;
-        difficulty = (int)Math.Clamp((timer / 15f),0f,7f);
-        waveRate = 2 + (7 - difficulty);
-
-        // Looking if an enemy should be spawned
-        if (waveTimer >= waveRate)
+        if(playerManager == null || playerManager.IsGameOver)
         {
-            waveTimer = 0f;
-            WaveDefinition wave = SelectWave();
-
-            waveSpawner.StartWave(wave);
-
-            playerManager.SetWave(waveCounter);
+            return;
         }
+
+        UpdateDifficulty();
+        UpdateWaveTimer();
     }
-                                
+    
+    // Difficulty based on timer.
+    private void UpdateDifficulty()
+    {
+        survivalTimer += Time.deltaTime;
+
+        difficulty = Mathf.Clamp(Mathf.FloorToInt(survivalTimer / difficultyInterval), 0, maxDifficulty);
+
+        waveRate = 2f + (maxDifficulty - difficulty);
+    }
+
+    // Wave change based on timer/difficulty
+    private void UpdateWaveTimer()
+    {
+        waveTimer += Time.deltaTime;
+
+        if(waveTimer < waveRate)
+        {
+            return;
+        }
+
+        waveTimer = 0f;
+        StartNextWave();
+    }
     public void EnemyDown(GameObject enemy)
     {
         // Enemy transform
@@ -119,34 +134,44 @@ public class GameManager : MonoBehaviour
     }
 
 
+    // Currently based on random-number generator selection.
     private WaveDefinition SelectWave()
     {
         int rng = UnityEngine.Random.Range(0, 100);
 
-        WaveDefinition selectedWave;
-
         // Mixed wave
         if (rng < 3 * difficulty + 15)
         {
-            selectedWave = wrenchGearWave;
+            return wrenchGearWave;
         }
 
         // Solo waves
-        else if(rng <= 3 * difficulty + 20)
+        if (rng <= 3 * difficulty + 20)
         {
-            selectedWave = bigGearWave;
+            return bigGearWave;
         }
 
-        else if (rng <= 5 * difficulty + 20)
+        if (rng <= 5 * difficulty + 20)
         {
-            selectedWave = gearWave;
+            return gearWave;
         }
 
-        else
-            selectedWave = wrenchWave;
-
-        waveCounter++;
-        return selectedWave;
+       
+        return wrenchWave;
     }
 
+    private void StartNextWave()
+    {
+        WaveDefinition wave = SelectWave();
+
+        if(wave == null)
+        {
+            return;
+        }
+
+        waveCounter++;
+        playerManager.SetWave(waveCounter);
+
+        waveSpawner.StartWave(wave);
+    }
 }

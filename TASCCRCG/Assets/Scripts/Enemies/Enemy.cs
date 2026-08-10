@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     // Enemy Fields
-    protected GameManager gameManager;
+    protected SurvivalGameManager gameManager;
     private float damageFlashDuration = 0.1f;
     private SpriteRenderer spriteRenderer;
     protected bool isFlashing = false;
@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Awake()
     {
-        gameManager = GameObject.FindAnyObjectByType<GameManager>();
+        gameManager = GameObject.FindAnyObjectByType<SurvivalGameManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GearWave : MonoBehaviour
 {
-    GameManager gameManager;
+    SurvivalGameManager gameManager;
     [SerializeField] GameObject gear;
     // Start is called before the first frame update
     void Awake()
     {
-        gameManager = this.GetComponent<GameManager>();
+        gameManager = this.GetComponent<SurvivalGameManager>();
     }
 
     public void Wave()

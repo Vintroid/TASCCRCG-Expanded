@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class WrenchGearWave : MonoBehaviour
 {
-    GameManager gameManager;
+    SurvivalGameManager gameManager;
     [SerializeField] GameObject gear;
     [SerializeField] GameObject wrench;
     // Start is called before the first frame update
     void Awake()
     {
-        gameManager = this.GetComponent<GameManager>();
+        gameManager = this.GetComponent<SurvivalGameManager>();
     }
     public void Wave()
     {

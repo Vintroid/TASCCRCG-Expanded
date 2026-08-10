@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73567a122e360244386e7131dbade13f, type: 3}
-  m_Name: GearWave
+  m_Name: Survival_BigGearWave
   m_EditorClassIdentifier: 
   enemies:
-  - enemyPrefab: {fileID: 3703071966299524341, guid: 4c9f7325ea4edca4a8196d4fcf1d17b8, type: 3}
+  - enemyPrefab: {fileID: 1407386639029919473, guid: 79d23e8fa8204a64db17d8db031028fd, type: 3}
     amount: 1
-    spawnInterval: 0.75
-    spawnPositionMode: 0
+    spawnInterval: 3
+    spawnPositionMode: 2
     spawnX: 7.5
-    fixedY: 0
+    fixedY: -3.33
     minY: 0
     maxY: 0
