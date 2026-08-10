@@ -9,7 +9,7 @@ public class SurvivalGameManager : MonoBehaviour
     [Header("Survival Fields")]
     [SerializeField] private float difficultyInterval = 15f;
     [SerializeField] private int maxDifficulty = 7;
-    public int difficulty = 0;
+    public int difficultyTier = 0;
     public float survivalTimer = 0f;
     public float waveTimer = 8f;
     public float waveRate = 9f;
@@ -43,10 +43,10 @@ public class SurvivalGameManager : MonoBehaviour
     {
         survivalTimer += Time.deltaTime;
 
-        difficulty = Mathf.Clamp(Mathf.FloorToInt(survivalTimer / difficultyInterval), 0, maxDifficulty);
-        difficultyManager.SetDifficulty(difficulty); // For global access to difficulty
+        difficultyTier = Mathf.Clamp(Mathf.FloorToInt(survivalTimer / difficultyInterval), 0, maxDifficulty);
+        difficultyManager.SetDifficultyTier(difficultyTier); // For global access to difficulty
 
-        waveRate = 2f + (maxDifficulty - difficulty);
+        waveRate = difficultyManager.WaveInterval;
     }
 
     // Wave change based on timer/difficulty
@@ -69,18 +69,18 @@ public class SurvivalGameManager : MonoBehaviour
         int rng = UnityEngine.Random.Range(0, 100);
 
         // Mixed wave
-        if (rng < 3 * difficulty + 15)
+        if (rng < 3 * difficultyTier + 15)
         {
             return wrenchGearWave;
         }
 
         // Solo waves
-        if (rng <= 3 * difficulty + 20)
+        if (rng <= 3 * difficultyTier + 20)
         {
             return bigGearWave;
         }
 
-        if (rng <= 5 * difficulty + 20)
+        if (rng <= 5 * difficultyTier + 20)
         {
             return gearWave;
         }

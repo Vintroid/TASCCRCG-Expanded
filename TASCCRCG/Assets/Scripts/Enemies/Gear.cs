@@ -36,7 +36,7 @@ public class Gear : Enemy
     protected override void Start()
     {
         base.Start();
-        health = baseHealth + difficultyManager.CurrentDifficulty;
+        health = baseHealth + difficultyManager.CurrentDifficultyTier;
         scoreValue = baseScoreValue;
 
         // Random amplitude

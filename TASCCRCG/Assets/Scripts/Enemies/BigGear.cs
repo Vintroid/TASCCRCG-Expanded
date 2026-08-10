@@ -18,7 +18,7 @@ public class BigGear : Enemy
     protected override void Start()
     {
         base.Start();
-        health = baseHealth + difficultyManager.CurrentDifficulty;
+        health = baseHealth + difficultyManager.CurrentDifficultyTier;
         scoreValue = baseScoreValue;
         isShooting = false;
     }
