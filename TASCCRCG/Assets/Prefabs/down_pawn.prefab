@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2039304838186159732}
   - component: {fileID: 4163211742605815645}
   - component: {fileID: 1021502707789951158}
-  - component: {fileID: 58550023912080681}
   m_Layer: 17
   m_Name: down_pawn
   m_TagString: StickyItem
@@ -150,16 +149,3 @@ MonoBehaviour:
   bulletCooldownTime: 0.25
   attachedToPlayer: 0
   bulletPool: {fileID: 0}
---- !u!114 &58550023912080681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6844820334377948841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b765f9ca27b53ac4780fad9fcf271abd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerManager: {fileID: 0}

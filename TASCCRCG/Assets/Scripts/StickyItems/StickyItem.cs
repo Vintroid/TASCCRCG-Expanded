@@ -13,18 +13,19 @@ public class StickyItem : MonoBehaviour
     private void Awake()
     {
         bulletSpawner = GetComponent<PawnBulletSpawner>();
-        scoreManager = GetComponent<ScoreManager>();
+        scoreManager = FindAnyObjectByType<ScoreManager>();
 
-        if(!TryGetComponent(out bulletSpawner))
+        if (!TryGetComponent(out bulletSpawner))
         {
             Debug.LogError($"{name}: StickyItem requires a PawnBulletSpawner component.", this);
             enabled = false;
         }
 
-        if (!TryGetComponent(out scoreManager))
+        if (scoreManager == null)
         {
-            Debug.LogError($"{name}: StickyItem requires a ScoreManager component.", this);
+            Debug.LogError($"{name}: ScoreManager was not found.", this);
             enabled = false;
+            return;
         }
     }
 
