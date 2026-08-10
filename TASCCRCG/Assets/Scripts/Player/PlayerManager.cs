@@ -134,8 +134,6 @@ public class PlayerManager : MonoBehaviour
 
         Mode = newMode;
 
-        Debug.Log($"Player mode changed to: {Mode}");
-
         OnModeChanged?.Invoke();
     }
 

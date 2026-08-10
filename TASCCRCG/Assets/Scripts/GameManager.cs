@@ -6,9 +6,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Audio Clips
-
-    // Game Fields
+    [Header("Game Fields")]
     public float timer = 0f;
     public int difficulty = 0;
     public float waveTimer = 8f;
@@ -18,21 +16,24 @@ public class GameManager : MonoBehaviour
     public int waveCounter = 0;
     public float powerupTimer = 3f;
 
-    // Managers
+    [Header("Managers")]
     [SerializeField] public PlayerManager playerManager;
 
-    // Prefabs
+    [Header("Prefabs")]
     [SerializeField] GameObject bishopPowerup;
     [SerializeField] GameObject rookPowerup;
     [SerializeField] GameObject queenPowerup;
     [SerializeField] GameObject pawnUp;
     [SerializeField] GameObject pawnDown;
 
-    // Wave Types
-    [SerializeField] WrenchWave wrenchWave;
-    [SerializeField] GearWave gearWave;
-    [SerializeField] WrenchGearWave wrenchGearWave;
-    [SerializeField] BigGearWave bigGearWave;
+    [Header("Wave Definitions")]
+    [SerializeField] WaveDefinition wrenchWave;
+    [SerializeField] WaveDefinition gearWave;
+    [SerializeField] WaveDefinition wrenchGearWave;
+    [SerializeField] WaveDefinition bigGearWave;
+
+    [SerializeField] private WaveSpawner waveSpawner;
+
 
 
     // Update is called once per frame
@@ -48,32 +49,11 @@ public class GameManager : MonoBehaviour
         if (waveTimer >= waveRate)
         {
             waveTimer = 0f;
-            string waveType = WaveSelector();
+            WaveDefinition wave = SelectWave();
 
-            // Check which wave was selected
-            switch(waveType)
-            {
-                case "wrench":
-                    wrenchWave.Wave();
-                    playerManager.SetWave(waveCounter);
-                    break;
+            waveSpawner.StartWave(wave);
 
-                case "gear":
-                    gearWave.Wave();
-                    playerManager.SetWave(waveCounter);
-                    break;
-
-                case "wrenchgear":
-                    wrenchGearWave.Wave();
-                    playerManager.SetWave(waveCounter);                                                                                                                                                                                                                                                                                              
-                    break;
-
-                case "biggear":
-                    bigGearWave.Wave();
-                    playerManager.SetWave(waveCounter);
-                    break;
-
-            }
+            playerManager.SetWave(waveCounter);
         }
     }
                                 
@@ -139,33 +119,34 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private String WaveSelector()
+    private WaveDefinition SelectWave()
     {
-        string waveType;
         int rng = UnityEngine.Random.Range(0, 100);
 
+        WaveDefinition selectedWave;
+
         // Mixed wave
-        if (rng <= 3 * difficulty + 100)
+        if (rng < 3 * difficulty + 15)
         {
-            waveType = "wrenchgear";
+            selectedWave = wrenchGearWave;
         }
 
         // Solo waves
-        else if(rng <= 3 * difficulty + 100)
+        else if(rng <= 3 * difficulty + 20)
         {
-            waveType = "biggear";
+            selectedWave = bigGearWave;
         }
 
         else if (rng <= 5 * difficulty + 20)
         {
-            waveType = "gear";
+            selectedWave = gearWave;
         }
 
         else
-            waveType = "wrench";
+            selectedWave = wrenchWave;
 
         waveCounter++;
-        return waveType;
+        return selectedWave;
     }
 
 }

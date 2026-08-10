@@ -5,16 +5,6 @@ public class WaveSpawner : MonoBehaviour
 {
     public bool IsSpawning {  get; private set; }
 
-    [SerializeField] private WaveDefinition testWave;
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            StartWave(testWave);
-        }
-    }
-
     public void StartWave(WaveDefinition wave)
     {
         if(wave == null)
