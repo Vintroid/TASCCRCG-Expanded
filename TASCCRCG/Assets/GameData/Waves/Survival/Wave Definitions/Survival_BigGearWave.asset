@@ -15,9 +15,12 @@ MonoBehaviour:
   enemies:
   - enemyPrefab: {fileID: 1407386639029919473, guid: 79d23e8fa8204a64db17d8db031028fd, type: 3}
     amount: 1
-    spawnInterval: 3
+    spawnInterval: 2
     spawnPositionMode: 2
     spawnX: 7.5
     fixedY: -3.33
     minY: 0
     maxY: 0
+    scaleAmountWithDifficulty: 1
+    tiersPerExtraEnemy: 3
+    maxExtraEnemies: 2

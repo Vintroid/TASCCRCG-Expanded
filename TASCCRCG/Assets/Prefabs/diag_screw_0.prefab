@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6343256812646741027}
   - component: {fileID: 8431603834471528541}
   - component: {fileID: 1786807611509233418}
+  - component: {fileID: 5480636592992525878}
   m_Layer: 11
   m_Name: diag_screw_0
   m_TagString: PlayerBullet
@@ -99,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpeed: 5
+  maxLifetime: 10
   direction: {x: 0, y: 0, z: 0}
 --- !u!70 &1786807611509233418
 CapsuleCollider2D:
@@ -135,3 +137,30 @@ CapsuleCollider2D:
   m_Offset: {x: 0.07018048, y: -0.022809964}
   m_Size: {x: 0.54912716, y: 0.4654385}
   m_Direction: 1
+--- !u!50 &5480636592992525878
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 996007702632301554}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4

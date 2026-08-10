@@ -8,15 +8,20 @@ public class PlayerBullet : MonoBehaviour
     [SerializeField] private float maxLifetime = 5f;
     private float lifetimeTimer;
     public Vector3 direction;
+    private Rigidbody2D rb;
+
     public PlayerBulletType BulletType { get; private set; }
 
     private PlayerBulletPool playerBulletPool;
 
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        transform.position += direction * bulletSpeed * Time.deltaTime;
-
         lifetimeTimer -= Time.deltaTime;
 
         if( lifetimeTimer <= 0f)
@@ -48,6 +53,8 @@ public class PlayerBullet : MonoBehaviour
         playerBulletPool = pool;
         BulletType = type;
         lifetimeTimer = maxLifetime; // Automatic removal after timer
+
+        rb.velocity = this.direction * bulletSpeed; // Initialize bullet speed
     }
 
     // Implemented pooling for bullets, send bullet to the pool object
@@ -57,6 +64,8 @@ public class PlayerBullet : MonoBehaviour
         {
             return;
         }
+
+        rb.velocity = Vector2.zero; // Reset bullet velocity
 
         if(playerBulletPool == null)
         {

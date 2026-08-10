@@ -21,3 +21,6 @@ MonoBehaviour:
     fixedY: 0
     minY: -2.15
     maxY: 2.85
+    scaleAmountWithDifficulty: 1
+    tiersPerExtraEnemy: 1
+    maxExtraEnemies: 7
