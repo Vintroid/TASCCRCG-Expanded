@@ -13,10 +13,16 @@ public class EnemySpawnEntry // Spawner object
     [SerializeField] private SpawnPositionMode spawnPositionMode;
 
     // Fixed coordinates for spawning
+    [Header("Fixed Coordinates Default")]
     [SerializeField] private float spawnX = 10f;
     [SerializeField] private float fixedY = 0f;
-    [SerializeField] private float minY = -2f;
-    [SerializeField] private float maxY = 3f;
+    [SerializeField] private float minY = -2.15f;
+    [SerializeField] private float maxY = 2.85f;
+
+    [Header("Difficulty Scaling")]
+    [SerializeField] private bool scaleAmountWithDifficulty;
+    [SerializeField] private int tiersPerExtraEnemy = 2;
+    [SerializeField] private int maxExtraEnemies = 3;
 
     public GameObject EnemyPrefab => enemyPrefab;
     public int Amount => amount;
@@ -27,4 +33,17 @@ public class EnemySpawnEntry // Spawner object
     public float FixedY => fixedY;
     public float MinY => minY;
     public float MaxY => maxY;
+
+    // Enemy amount scaling
+    public int GetAmount(int difficultyTier)
+    {
+        if(!scaleAmountWithDifficulty || tiersPerExtraEnemy <= 0)
+        {
+            return amount;
+        }
+
+        int bonusAmount = difficultyTier / tiersPerExtraEnemy;
+
+        return amount + Mathf.Min(bonusAmount, maxExtraEnemies);
+    }
 }

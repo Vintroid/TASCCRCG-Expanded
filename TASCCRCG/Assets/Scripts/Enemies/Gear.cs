@@ -9,9 +9,9 @@ public class Gear : Enemy
 
     // Enemy unique fields
     [Header("Characteristics")]
-    [SerializeField] int baseHealth = 3;
+    [SerializeField] int baseHealth = 4;
     [SerializeField] int baseScoreValue = 100;
-    [SerializeField] float minMoveAmp = 0.5f; // Amp Tested Default 0.5f to 3f.
+    [SerializeField] float minMoveAmp = 0.25f; // Amp Tested Default 0.25f to 3f.
     [SerializeField] float maxMoveAmp = 3f;
     [SerializeField] float fireRate = 2.5f;
 

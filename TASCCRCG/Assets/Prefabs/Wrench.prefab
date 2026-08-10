@@ -148,10 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85bff1aef547be44eb3964f444fdad42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  rb: {fileID: 7384398525861478453}
-  baseHealth: 2
-  scoreValue: 50
+  baseHealth: 3
+  baseScoreValue: 50
   speed: 2
 --- !u!70 &971804539842934761
 CapsuleCollider2D:

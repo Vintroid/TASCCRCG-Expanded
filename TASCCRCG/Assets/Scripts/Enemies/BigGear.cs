@@ -7,7 +7,7 @@ public class BigGear : Enemy
 
     // Enemy unique fields
     [Header("Characteristics")]
-    [SerializeField] int baseHealth = 5;
+    [SerializeField] int baseHealth = 8;
     [SerializeField] int baseScoreValue = 200;
     [SerializeField] float speed = 1f;
 

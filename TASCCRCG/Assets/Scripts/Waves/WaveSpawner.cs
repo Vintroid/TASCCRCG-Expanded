@@ -5,6 +5,17 @@ public class WaveSpawner : MonoBehaviour
 {
     public bool IsSpawning {  get; private set; }
 
+    private DifficultyManager difficultyManager;
+
+    private void Awake()
+    {
+        difficultyManager = FindAnyObjectByType<DifficultyManager>();
+
+        if(difficultyManager == null)
+        {
+            Debug.LogError($"{name}: DifficultyManager was not found.", this);
+        }
+    }
     public void StartWave(WaveDefinition wave)
     {
         if(wave == null)
@@ -29,7 +40,10 @@ public class WaveSpawner : MonoBehaviour
                 continue;
             }
 
-            for (int i = 0; i < entry.Amount; i++) {
+            // Enemy amount 
+            int amount = entry.GetAmount(difficultyManager.CurrentDifficultyTier);
+
+            for (int i = 0; i < amount; i++) {
 
                 Instantiate(entry.EnemyPrefab, GetSpawnPosition(entry), Quaternion.identity);
 
