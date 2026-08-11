@@ -1510,7 +1510,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5.03125
+  orthographic size: 4.9270835
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2720,11 +2720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerManager: {fileID: 151335078}
   waveSpawner: {fileID: 649665282}
-  waves:
-  - {fileID: 11400000, guid: 76bbb115367e017418067d2049e08697, type: 2}
-  - {fileID: 11400000, guid: fbfb16d0ce72406429ba95259c4b2780, type: 2}
-  - {fileID: 11400000, guid: b7c6fdc5dc61a7648a7bd04a55fe40f3, type: 2}
-  timeBetweenWaves: 3
+  levelDefinition: {fileID: 11400000, guid: bdb7a93b16358184ba7290d2f9190b4f, type: 2}
 --- !u!4 &1010265511
 Transform:
   m_ObjectHideFlags: 0

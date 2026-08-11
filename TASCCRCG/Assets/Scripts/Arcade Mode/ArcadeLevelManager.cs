@@ -10,8 +10,7 @@ public class ArcadeLevelManager : MonoBehaviour
     [SerializeField] private WaveSpawner waveSpawner;
 
     [Header("Level")]
-    [SerializeField] private WaveDefinition[] waves;
-    [SerializeField] private float timeBetweenWaves = 3f;
+    [SerializeField] private ArcadeLevelDefinition levelDefinition;
 
     private int currentWaveIndex = 0;
     private bool levelStarted = false;
@@ -26,9 +25,9 @@ public class ArcadeLevelManager : MonoBehaviour
     {
         levelStarted = true;
 
-        while(currentWaveIndex < waves.Length)
+        while(currentWaveIndex < levelDefinition.Waves.Length)
         {
-            WaveDefinition wave = waves[currentWaveIndex];
+            WaveDefinition wave = levelDefinition.Waves[currentWaveIndex];
 
             if(wave == null)
             {
@@ -49,9 +48,9 @@ public class ArcadeLevelManager : MonoBehaviour
 
             currentWaveIndex++;
 
-            if(currentWaveIndex < waves.Length)
+            if(currentWaveIndex < levelDefinition.Waves.Length)
             {
-                yield return new WaitForSeconds(timeBetweenWaves);
+                yield return new WaitForSeconds(levelDefinition.TimeBetweenWaves);
             }
         }
 
