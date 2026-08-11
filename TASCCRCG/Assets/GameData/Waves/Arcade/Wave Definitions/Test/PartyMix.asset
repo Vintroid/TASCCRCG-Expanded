@@ -19,8 +19,8 @@ MonoBehaviour:
     spawnPositionMode: 1
     spawnX: 10
     fixedY: 0
-    minY: 2.85
-    maxY: -2.15
+    minY: -2.15
+    maxY: 2.85
     scaleAmountWithDifficulty: 0
     tiersPerExtraEnemy: 0
     maxExtraEnemies: 0

@@ -11,9 +11,11 @@ public class ArcadeLevelManager : MonoBehaviour
 
     [Header("Level")]
     [SerializeField] private ArcadeLevelDefinition levelDefinition;
-
     private int currentWaveIndex = 0;
     private bool levelStarted = false;
+
+    public bool IsLevelComplete { get; private set; }
+    public event System.Action OnLevelCompleted;
 
     void Start()
     {
@@ -59,6 +61,10 @@ public class ArcadeLevelManager : MonoBehaviour
 
     private void LevelComplete()
     {
+        IsLevelComplete = true;
+
         Debug.Log("Arcade Level Complete!");
+
+        OnLevelCompleted?.Invoke();
     }
 }
