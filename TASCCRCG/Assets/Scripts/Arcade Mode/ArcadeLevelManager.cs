@@ -19,6 +19,22 @@ public class ArcadeLevelManager : MonoBehaviour
 
     void Start()
     {
+        StartLevel(levelDefinition);
+    }
+
+    // Starting Level Definitions
+    public void StartLevel(ArcadeLevelDefinition newLevel)
+    {
+        if(newLevel == null)
+        {
+            Debug.LogError($"{name}: Cannot start a null level definition.", this);
+            return;
+        }
+
+        levelDefinition = newLevel;
+        currentWaveIndex = 0;
+        IsLevelComplete = false;
+
         StartCoroutine(RunLevel());
     }
 
