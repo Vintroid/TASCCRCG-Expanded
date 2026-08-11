@@ -14,6 +14,10 @@ public class Enemy : MonoBehaviour
     protected int health;
     protected int scoreValue;
 
+    // Enemy count helper fields
+    public event System.Action<Enemy> OnEnemyRemoved;
+    private bool isRemoved = false;
+
     protected virtual void Awake()
     {
         lootManager = GameObject.FindAnyObjectByType<EnemyLootManager>();
@@ -69,9 +73,27 @@ public class Enemy : MonoBehaviour
     // Behaviour when the enemy is destroyed
     protected virtual void OnDestroyed()
     {
-        // Powerups and other effects when destroyed
-        lootManager.EnemyDown(gameObject, scoreValue);
-        Destroy(this.gameObject);
+        RemoveEnemy(true);
+    }
+
+    // Expand OnDestroyed to include enemy tracking
+    private void RemoveEnemy(bool dropableLoot)
+    {
+        if (isRemoved)
+        {
+            return;
+        }
+
+        isRemoved = true;
+
+        OnEnemyRemoved?.Invoke(this); // Run all subscribed methods on this enemy
+
+        if( dropableLoot)
+        {
+            lootManager.EnemyDown(gameObject, scoreValue);
+        }
+
+        Destroy(gameObject);
     }
 
     private IEnumerator DamageFlashCoroutine()
@@ -92,7 +114,8 @@ public class Enemy : MonoBehaviour
     {
         if (otherObject.CompareTag("EnemyWall"))
         {
-            Destroy(gameObject);
+            RemoveEnemy(false); // No drops when removed by wall
+            return;
         }
         if (otherObject.CompareTag("PlayerBullet"))
         {

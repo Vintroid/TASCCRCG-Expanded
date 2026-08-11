@@ -7,6 +7,10 @@ public class WaveSpawner : MonoBehaviour
 
     private DifficultyManager difficultyManager;
 
+    // Enemy Tracking
+    private int activeEnemies = 0;
+    public bool IsWaveComplete => !IsSpawning && activeEnemies <= 0;
+
     private void Awake()
     {
         difficultyManager = FindAnyObjectByType<DifficultyManager>();
@@ -45,12 +49,32 @@ public class WaveSpawner : MonoBehaviour
 
             for (int i = 0; i < amount; i++) {
 
-                Instantiate(entry.EnemyPrefab, GetSpawnPosition(entry), Quaternion.identity);
+                // Enemy Tracking while instantiating
+                GameObject enemyObject = Instantiate(entry.EnemyPrefab, GetSpawnPosition(entry), Quaternion.identity);
+
+                Enemy enemy = enemyObject.GetComponent<Enemy>();
+
+                if(enemy != null)
+                {
+                    activeEnemies++;
+                    enemy.OnEnemyRemoved += HandleEnemyRemoved;
+                }
+                else
+                {
+                    Debug.LogWarning($"{name}: Spawned entry prefab has no Enemy component.", enemyObject);
+                }
 
                 yield return new WaitForSeconds(entry.SpawnInterval);
             }
         }
         IsSpawning = false;
+    }
+
+    private void HandleEnemyRemoved(Enemy enemy)
+    {
+        enemy.OnEnemyRemoved -= HandleEnemyRemoved;
+
+        activeEnemies = Mathf.Max(0, activeEnemies - 1);
     }
 
     // Getting initial stating position for Instantiation
