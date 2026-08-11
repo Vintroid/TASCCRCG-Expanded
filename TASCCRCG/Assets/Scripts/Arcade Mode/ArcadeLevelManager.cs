@@ -42,7 +42,7 @@ public class ArcadeLevelManager : MonoBehaviour
             waveSpawner.StartWave(wave);
 
             // Stop while loop here when enemies are left
-            while (waveSpawner.IsWaveComplete)
+            while (!waveSpawner.IsWaveComplete)
             {
                 yield return null;
             }
