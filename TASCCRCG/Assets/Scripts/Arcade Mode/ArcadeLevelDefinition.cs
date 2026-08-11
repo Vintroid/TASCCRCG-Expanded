@@ -12,4 +12,7 @@ public class ArcadeLevelDefinition : ScriptableObject // Script with Level Info
 
     public WaveDefinition[] Waves => waves;
     public float TimeBetweenWaves => timeBetweenWaves;
+
+    [SerializeField] private ArcadeLevelDefinition nextLevel;
+    public ArcadeLevelDefinition NextLevel => nextLevel;
 }

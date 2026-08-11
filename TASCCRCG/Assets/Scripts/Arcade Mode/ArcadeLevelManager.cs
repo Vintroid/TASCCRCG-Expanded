@@ -17,6 +17,8 @@ public class ArcadeLevelManager : MonoBehaviour
     public bool IsLevelComplete { get; private set; }
     public event System.Action OnLevelCompleted;
 
+    public ArcadeLevelDefinition CurrentLevel => levelDefinition; 
+
     void Start()
     {
         StartLevel(levelDefinition);
