@@ -5,11 +5,22 @@ using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
+    private SpriteRenderer spriteRenderer;
+    private bool isFlashing = false;
+    [SerializeField] private float damageFlashDuration = 0.1f;
+
     [Header("Health")]
     [SerializeField] private int maxHealth = 30;
+
+    public BossState CurrentState { get; private set; }
     
     public int CurrentHealth { get; private set; }
     public bool IsDefeated { get; private set; }
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     private void Update()
     {
@@ -43,6 +54,11 @@ public class BossController : MonoBehaviour
             CurrentHealth = 0;
             DefeatBoss();
         }
+
+        if (!isFlashing)
+        {
+            StartCoroutine(DamageFlashCoroutine());
+        }
     }
 
     // Boss beaten cleanup
@@ -69,5 +85,24 @@ public class BossController : MonoBehaviour
         {
             TakeDamage(1);
         }
+    }
+
+    private IEnumerator DamageFlashCoroutine()
+    {
+        isFlashing = true;
+
+        // Enemy flashes quickly when taking damage.
+        spriteRenderer.enabled = false;
+        yield return new WaitForSeconds(damageFlashDuration);
+        spriteRenderer.enabled = true;
+
+        isFlashing = false;
+
+    }
+
+    // Boss can change states (patterns, behaviour, etc.)
+    private void EnterState(BossState newState)
+    {
+        CurrentState = newState;
     }
 }
