@@ -38,7 +38,7 @@ public class BossController : MonoBehaviour
 
         CurrentHealth -= damage;
 
-        if(CurrentHealth < 0)
+        if(CurrentHealth <= 0)
         {
             CurrentHealth = 0;
             DefeatBoss();
@@ -56,5 +56,18 @@ public class BossController : MonoBehaviour
         IsDefeated = true;
 
         Debug.Log("Boss Defeated");
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        HandleCollision(collision.gameObject);
+    }
+
+    private void HandleCollision(GameObject otherObject)
+    {
+        if (otherObject.CompareTag("PlayerBullet"))
+        {
+            TakeDamage(1);
+        }
     }
 }
