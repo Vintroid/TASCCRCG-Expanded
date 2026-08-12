@@ -75,15 +75,7 @@ public abstract class Player : MonoBehaviour
         UpdateDamageCooldown();
         UpdateMovement();
 
-        if (isBossIntroLocked)
-        {
-            IsShooting = false;
-        }
-        else
-        {
-            IsShooting = ReadShootInput();
-        }
-            
+        IsShooting = !isBossIntroLocked && ReadShootInput();
     }
 
     private void HandleModeChanged()
@@ -126,7 +118,6 @@ public abstract class Player : MonoBehaviour
                 pos.z
             );
 
-            transform.position = pos;
             return;
         }
 
