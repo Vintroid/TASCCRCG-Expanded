@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class BossEncounterController : MonoBehaviour
 {
+    [Header("Level")]
+    [SerializeField] private ScrollingController scrollingController;
+
+    [Header("Boss Entrance")]
+    [SerializeField] private Vector3 bossSpawnPosition = new Vector3(10f, 0f, 0f);
+    [SerializeField] private Vector3 bossFightPosition = new Vector3(6f, 0f, 0f);
+    [SerializeField] private float bossEntranceSpeed = 3f;
+
     private BossController activeBoss;
 
     [Header("Timing")]
@@ -36,10 +44,22 @@ public class BossEncounterController : MonoBehaviour
         IsEncounterRunning = true;
         IsEncounterComplete = false;
 
-        // TO DO: Implement scrolling stopage
+        // Screen stop scrolling
+        if(scrollingController != null)
+        {
+            scrollingController.StopScrolling();
+        }
 
-        activeBoss = Instantiate(bossPrefab, new Vector3(2f, 0f, 0f), Quaternion.identity);
+        // Pause before boss appearance
+        yield return new WaitForSeconds(delayBeforeBoss);
 
+        // Boss appears to designated coordinates
+        activeBoss = Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity);
+
+        // Boss entrace. code stop until coroutine is over.
+        yield return StartCoroutine(MoveBossIntoPosition());
+
+        // Start fight after entrance is over.
         OnBossFightStarted?.Invoke();
 
         activeBoss.StartFight();
@@ -57,5 +77,20 @@ public class BossEncounterController : MonoBehaviour
         IsEncounterRunning = false;
         IsEncounterComplete = true;
 
+    }
+
+    private IEnumerator MoveBossIntoPosition()
+    {
+        // Boss moving slowly towards starting position.
+        while(Vector3.Distance(activeBoss.transform.position, bossFightPosition) > 0.01f)
+        {
+            activeBoss.transform.position =
+                Vector3.MoveTowards(activeBoss.transform.position, bossFightPosition,
+                    bossEntranceSpeed * Time.deltaTime);
+
+            yield return null;
+        }
+
+        activeBoss.transform.position = bossFightPosition;
     }
 }

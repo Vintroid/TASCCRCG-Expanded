@@ -4087,7 +4087,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3460d5e48df10bf4e9dcd3f510d98983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss: {fileID: -1895639457074753095, guid: 9cc28dd99c4e70042b2fe04548f242c4, type: 3}
+  scrollingController: {fileID: 1495783872}
+  bossSpawnPosition: {x: 10, y: 0, z: 0}
+  bossFightPosition: {x: 6, y: 0, z: 0}
+  bossEntranceSpeed: 3
   delayBeforeBoss: 2
 --- !u!4 &1960428681
 Transform:
