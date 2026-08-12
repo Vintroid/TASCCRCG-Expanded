@@ -17,3 +17,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fbfb16d0ce72406429ba95259c4b2780, type: 2}
   - {fileID: 11400000, guid: b7c6fdc5dc61a7648a7bd04a55fe40f3, type: 2}
   timeBetweenWaves: 1
+  nextLevel: {fileID: 11400000, guid: b5b2ee015be50fe4aaf3fd7b59113c46, type: 2}

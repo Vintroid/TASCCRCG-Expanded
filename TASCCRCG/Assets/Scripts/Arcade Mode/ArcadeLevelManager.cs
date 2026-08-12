@@ -14,8 +14,13 @@ public class ArcadeLevelManager : MonoBehaviour
     private int currentWaveIndex = 0;
     private bool levelStarted = false;
 
+    [Header("Boss")]
+    [SerializeField] private BossEncounterController bossEncounterController;
+
     public bool IsLevelComplete { get; private set; }
     public event System.Action OnLevelCompleted;
+
+    public bool IsLevelRunning { get; private set; }
 
     public ArcadeLevelDefinition CurrentLevel => levelDefinition; 
 
@@ -27,6 +32,11 @@ public class ArcadeLevelManager : MonoBehaviour
     // Starting Level Definitions
     public void StartLevel(ArcadeLevelDefinition newLevel)
     {
+        if (IsLevelRunning)
+        {
+            return;
+        }
+
         if(newLevel == null)
         {
             Debug.LogError($"{name}: Cannot start a null level definition.", this);
@@ -36,6 +46,7 @@ public class ArcadeLevelManager : MonoBehaviour
         levelDefinition = newLevel;
         currentWaveIndex = 0;
         IsLevelComplete = false;
+        IsLevelRunning = true;
 
         StartCoroutine(RunLevel());
     }
@@ -74,12 +85,21 @@ public class ArcadeLevelManager : MonoBehaviour
             }
         }
 
+        bossEncounterController.StartEncounter();
+
+        // Waiting to get signal the boss fight is done
+        while (!bossEncounterController.IsEncouterComplete)
+        {
+            yield return null;
+        }
+
         LevelComplete();
     }
 
     private void LevelComplete()
     {
         IsLevelComplete = true;
+        IsLevelRunning = false;
 
         Debug.Log("Arcade Level Complete!");
 

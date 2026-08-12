@@ -49,7 +49,7 @@ public class ArcadeUIManager : MonoBehaviour
 
         if (nextLevel != null)
         {
-            Debug.Log($"Next Level available: {nextLevel.name}");
+            Debug.Log($"Next Level available: {nextLevel.name}. Press Enter to Continue.");
         }
         else
         {
