@@ -28,6 +28,11 @@ public abstract class Player : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rb;
 
+    [Header("Boss Fights")]
+    [SerializeField] private float bossIntroMoveSpeed = 3f;
+    private float bossIntroTargetX;
+    private bool isBossIntroLocked = false;
+
     public bool IsShooting { get; private set; }
 
     protected virtual void Awake()
@@ -69,7 +74,16 @@ public abstract class Player : MonoBehaviour
         }
         UpdateDamageCooldown();
         UpdateMovement();
-        IsShooting = ReadShootInput();
+
+        if (isBossIntroLocked)
+        {
+            IsShooting = false;
+        }
+        else
+        {
+            IsShooting = ReadShootInput();
+        }
+            
     }
 
     private void HandleModeChanged()
@@ -97,8 +111,27 @@ public abstract class Player : MonoBehaviour
 
     private void UpdateMovement()
     {
-        Vector2 input = ReadMovementInput();
         Vector3 pos = transform.position;
+
+        // During boss entrance, player is movement locked
+        if (isBossIntroLocked)
+        {
+            transform.position = new Vector3(
+                Mathf.MoveTowards(
+                    pos.x,
+                    bossIntroTargetX,
+                    bossIntroMoveSpeed * Time.deltaTime
+            ),
+                pos.y,
+                pos.z
+            );
+
+            transform.position = pos;
+            return;
+        }
+
+        Vector2 input = ReadMovementInput();
+        pos = transform.position;
         pos.x += input.x * moveSpeed * Time.deltaTime;
         pos.y += input.y * moveSpeed * Time.deltaTime;
 
@@ -223,5 +256,16 @@ public abstract class Player : MonoBehaviour
         {
             playerManager.OnModeChanged.RemoveListener(HandleModeChanged);
         }
+    }
+
+    public void StartBossIntroPositioning(float targetX)
+    {
+        isBossIntroLocked = true;
+        bossIntroTargetX = targetX;
+    }
+
+    public void EndBossIntroPositioning()
+    {
+        isBossIntroLocked = false;
     }
 }

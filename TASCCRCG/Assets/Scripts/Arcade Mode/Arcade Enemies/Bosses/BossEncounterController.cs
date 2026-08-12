@@ -9,13 +9,19 @@ public class BossEncounterController : MonoBehaviour
 
     [Header("Boss Entrance")]
     [SerializeField] private Vector3 bossSpawnPosition = new Vector3(10f, 0f, 0f);
-    [SerializeField] private Vector3 bossFightPosition = new Vector3(6f, 0f, 0f);
+    [SerializeField] private Vector3 bossFightPosition = new Vector3(3.5f, 0f, 0f);
     [SerializeField] private float bossEntranceSpeed = 3f;
+
+    [Header("Player Intro")]
+    [SerializeField] private Player player1;
+    [SerializeField] private Player player2;
+    [SerializeField] private float playerBossIntroX = -3f;
 
     private BossController activeBoss;
 
     [Header("Timing")]
     [SerializeField] private float delayBeforeBoss = 2f;
+
 
     public bool IsEncounterRunning { get; private set; }
     public bool IsEncounterComplete { get; private set; }
@@ -50,6 +56,17 @@ public class BossEncounterController : MonoBehaviour
             scrollingController.StopScrolling();
         }
 
+        // Move players toward boss intro position
+        if(player1 != null)
+        {
+            player1.StartBossIntroPositioning(playerBossIntroX);
+        }
+
+        if(player2 != null && player2.isActiveAndEnabled)
+        {
+            player2.StartBossIntroPositioning(playerBossIntroX);
+        }
+
         // Pause before boss appearance
         yield return new WaitForSeconds(delayBeforeBoss);
 
@@ -58,6 +75,16 @@ public class BossEncounterController : MonoBehaviour
 
         // Boss entrace. code stop until coroutine is over.
         yield return StartCoroutine(MoveBossIntoPosition());
+
+        // Players can move again
+        if(player1 != null)
+        {
+            player1.EndBossIntroPositioning();
+        }
+        if (player2 != null && player2.isActiveAndEnabled)
+        {
+            player2.EndBossIntroPositioning();
+        }
 
         // Start fight after entrance is over.
         OnBossFightStarted?.Invoke();

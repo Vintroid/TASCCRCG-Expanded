@@ -498,6 +498,7 @@ MonoBehaviour:
   yMax: 2.92
   damageCooldownTime: 2
   damageFlashDuration: 0.1
+  bossIntroMoveSpeed: 3
   playerHealth: 4
   life1: {fileID: 734117739}
   life2: {fileID: 1767607504}
@@ -3127,7 +3128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   red: {fileID: 1495783869}
-  horizontal_speed: 0.02
+  horizontal_speed: 0.03
 --- !u!1 &1555725620
 GameObject:
   m_ObjectHideFlags: 0
@@ -3546,7 +3547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5766680046722677861, guid: 57a50f0bc088d9041a9cfcca6baf0381, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6191411714609127400, guid: 57a50f0bc088d9041a9cfcca6baf0381, type: 3}
       propertyPath: m_RootOrder
@@ -3740,6 +3741,7 @@ MonoBehaviour:
   yMax: 2.92
   damageCooldownTime: 2
   damageFlashDuration: 0.1
+  bossIntroMoveSpeed: 3
   player1: {fileID: 58004885}
 --- !u!82 &1807700854
 AudioSource:
@@ -4089,8 +4091,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scrollingController: {fileID: 1495783872}
   bossSpawnPosition: {x: 10, y: 0, z: 0}
-  bossFightPosition: {x: 6, y: 0, z: 0}
+  bossFightPosition: {x: 3.5, y: 0, z: 0}
   bossEntranceSpeed: 3
+  player1: {fileID: 58004885}
+  player2: {fileID: 1807700853}
+  playerBossIntroX: -3
   delayBeforeBoss: 2
 --- !u!4 &1960428681
 Transform:
