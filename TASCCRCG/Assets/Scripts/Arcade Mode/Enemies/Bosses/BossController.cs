@@ -20,8 +20,6 @@ public class BossController : MonoBehaviour
     {
         IsDefeated = false;
 
-        Instantiate(this,new Vector3(2f,0f,0f),Quaternion.Euler(0f,0f,0));
-
         Debug.Log("Boss fight started!");
     }
 

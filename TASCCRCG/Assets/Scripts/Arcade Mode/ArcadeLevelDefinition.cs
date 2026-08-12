@@ -10,6 +10,10 @@ public class ArcadeLevelDefinition : ScriptableObject // Script with Level Info
     [SerializeField] private WaveDefinition[] waves;
     [SerializeField] private float timeBetweenWaves = 3f;
 
+    // Each level will have a boss.
+    [SerializeField] private BossController bossPrefab;
+    public BossController BossPrefab => bossPrefab;
+
     public WaveDefinition[] Waves => waves;
     public float TimeBetweenWaves => timeBetweenWaves;
 

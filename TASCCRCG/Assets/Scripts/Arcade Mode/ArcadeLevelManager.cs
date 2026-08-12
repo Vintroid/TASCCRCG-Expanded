@@ -85,10 +85,10 @@ public class ArcadeLevelManager : MonoBehaviour
             }
         }
 
-        bossEncounterController.StartEncounter();
+        bossEncounterController.StartEncounter(CurrentLevel.BossPrefab);
 
         // Waiting to get signal the boss fight is done
-        while (!bossEncounterController.IsEncouterComplete)
+        while (!bossEncounterController.IsEncounterComplete)
         {
             yield return null;
         }

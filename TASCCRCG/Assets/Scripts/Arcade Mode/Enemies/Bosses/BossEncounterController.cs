@@ -4,41 +4,48 @@ using UnityEngine;
 
 public class BossEncounterController : MonoBehaviour
 {
-    [Header("Boss")]
-    [SerializeField] private BossController boss;
+    private BossController activeBoss;
 
     [Header("Timing")]
     [SerializeField] private float delayBeforeBoss = 2f;
 
-    public bool IsEncouterRunning { get; private set; }
-    public bool IsEncouterComplete { get; private set; }
+    public bool IsEncounterRunning { get; private set; }
+    public bool IsEncounterComplete { get; private set; }
 
     public event System.Action OnBossFightStarted;
     public event System.Action OnBossFightCompleted;
 
-    public void StartEncounter()
+    public void StartEncounter(BossController bossPrefab)
     {
-        if (IsEncouterRunning)
+        if (IsEncounterRunning)
         {
             return;
         }
 
-        StartCoroutine(RunEncounter());
+        if(bossPrefab == null)
+        {
+            Debug.LogError($"{name}: Cannot start encounter with a null boss.",this);
+            return;
+        }
+
+        StartCoroutine(RunEncounter(bossPrefab));
     }
 
-    private IEnumerator RunEncounter()
+    private IEnumerator RunEncounter(BossController bossPrefab)
     {
-        IsEncouterRunning = true;
-        IsEncouterComplete = false;
+        IsEncounterRunning = true;
+        IsEncounterComplete = false;
 
         // TO DO: Implement scrolling stopage
 
+        activeBoss = Instantiate(bossPrefab, new Vector3(2f, 0f, 0f), Quaternion.identity);
+
         OnBossFightStarted?.Invoke();
 
-        boss.StartFight();
+        activeBoss.StartFight();
 
         // Runs until boss defeat flag is up.
-        while (!boss.IsDefeated)
+        while (!activeBoss.IsDefeated)
         {
             yield return null;
         }
@@ -47,8 +54,8 @@ public class BossEncounterController : MonoBehaviour
 
         // TO DO: Implement Boss Death or Exit
 
-        IsEncouterRunning = false;
-        IsEncouterComplete = true;
+        IsEncounterRunning = false;
+        IsEncounterComplete = true;
 
     }
 }
