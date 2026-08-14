@@ -18,6 +18,7 @@ public class BossEncounterController : MonoBehaviour
     [SerializeField] private float playerBossIntroX = -3f;
 
     private BossController activeBoss;
+    private bool bossDefeated;
 
     [Header("Timing")]
     [SerializeField] private float delayBeforeBoss = 2f;
@@ -73,6 +74,9 @@ public class BossEncounterController : MonoBehaviour
         // Boss appears to designated coordinates
         activeBoss = Instantiate(bossPrefab, bossSpawnPosition, Quaternion.identity);
 
+        bossDefeated = false;
+        activeBoss.OnBossDefeated += HandleBossDefeated; // Waiting for BossController event
+
         // Boss entrace. code stop until coroutine is over.
         yield return StartCoroutine(MoveBossIntoPosition());
 
@@ -92,14 +96,12 @@ public class BossEncounterController : MonoBehaviour
         activeBoss.StartFight();
 
         // Runs until boss defeat flag is up.
-        while (!activeBoss.IsDefeated)
+        while (!bossDefeated)
         {
             yield return null;
         }
 
         OnBossFightCompleted?.Invoke();
-
-        // TO DO: Implement Boss Death or Exit
 
         IsEncounterRunning = false;
         IsEncounterComplete = true;
@@ -119,5 +121,12 @@ public class BossEncounterController : MonoBehaviour
         }
 
         activeBoss.transform.position = bossFightPosition;
+    }
+
+    private void HandleBossDefeated(BossController boss)
+    {
+        bossDefeated = true;
+
+        boss.OnBossDefeated -= HandleBossDefeated;
     }
 }

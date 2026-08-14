@@ -45,4 +45,10 @@ public class TestBossController : BossController
 
 
     }
+
+    protected override void HandleDefeat()
+    {
+        base.HandleDefeat();
+        Destroy(gameObject);
+    }
 }

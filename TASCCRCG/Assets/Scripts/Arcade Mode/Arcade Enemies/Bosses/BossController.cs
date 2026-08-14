@@ -12,6 +12,8 @@ public class BossController : MonoBehaviour
     [Header("Health")]
     [SerializeField] private int maxHealth = 30;
 
+    public event System.Action<BossController> OnBossDefeated;
+
     protected BossState currentState;
     // For debugging
     public string CurrentStateName => currentState?.GetType().Name ?? "None";
@@ -56,6 +58,7 @@ public class BossController : MonoBehaviour
         {
             CurrentHealth = 0;
             DefeatBoss();
+            return;
         }
 
         if (!isFlashing)
@@ -74,7 +77,14 @@ public class BossController : MonoBehaviour
 
         IsDefeated = true;
 
+        currentState?.Exit();
+        currentState = null;
+
         Debug.Log("Boss Defeated");
+
+        OnBossDefeated?.Invoke(this);
+
+        HandleDefeat();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -111,5 +121,10 @@ public class BossController : MonoBehaviour
         currentState?.Enter();
 
         Debug.Log($"{name}: Current State = {CurrentStateName}");
+    }
+
+    protected virtual void HandleDefeat()
+    {
+
     }
 }
