@@ -12,7 +12,7 @@ public class BossController : MonoBehaviour
     [Header("Health")]
     [SerializeField] private int maxHealth = 30;
 
-    public BossState CurrentState { get; private set; }
+    protected BossState currentState;
     
     public int CurrentHealth { get; private set; }
     public bool IsDefeated { get; private set; }
@@ -24,11 +24,12 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
-        // Test instakill
-        if (Input.GetKeyDown(KeyCode.O))
+        if (IsDefeated)
         {
-            DefeatBoss();
+            return;
         }
+
+        currentState?.Update();
     }
 
     // Boss fight initialization
@@ -37,7 +38,7 @@ public class BossController : MonoBehaviour
         CurrentHealth = maxHealth;
         IsDefeated = false;
 
-        Debug.Log("Boss fight started! HP:{CurrentHealth}");
+        Debug.Log($"Boss fight started! HP:{CurrentHealth}");
     }
 
     public void TakeDamage(int damage)
@@ -101,8 +102,10 @@ public class BossController : MonoBehaviour
     }
 
     // Boss can change states (patterns, behaviour, etc.)
-    private void EnterState(BossState newState)
+    private void ChangeState(BossState newState)
     {
-        CurrentState = newState;
+        currentState?.Exit();
+        currentState = newState;
+        currentState?.Enter();
     }
 }

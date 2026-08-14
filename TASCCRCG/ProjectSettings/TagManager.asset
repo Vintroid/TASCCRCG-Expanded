@@ -16,6 +16,7 @@ TagManager:
   - Gear
   - Wall
   - Big Gear
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -35,7 +36,7 @@ TagManager:
   - Enemy Bullets
   - Big Gear
   - StickyItems
-  - 
+  - Boss
   - 
   - 
   - 
@@ -67,6 +68,9 @@ TagManager:
     locked: 0
   - name: Gear
     uniqueID: 632770357
+    locked: 0
+  - name: Boss
+    uniqueID: 3825350697
     locked: 0
   - name: Default
     uniqueID: 0
