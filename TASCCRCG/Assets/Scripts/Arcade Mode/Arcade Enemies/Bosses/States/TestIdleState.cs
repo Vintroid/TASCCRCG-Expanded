@@ -6,7 +6,10 @@ public class TestIdleState : BossState
 {
     private TestBossController testBoss;
     private float timer;
-    private const float idleDuration = 2f;
+    private float shootTimer;
+    private const float idleDuration = 4f;
+    private const float shootInterval = 0.5f;
+
     public TestIdleState(TestBossController boss): base(boss) {
 
         testBoss = boss;
@@ -15,6 +18,13 @@ public class TestIdleState : BossState
     public override void Update()
     {
         timer -= Time.deltaTime;
+        shootTimer -= Time.deltaTime;
+
+        if(shootTimer <= 0f)
+        {
+            testBoss.ShootSaws();
+            shootTimer = shootInterval;
+        }
 
         if(timer <= 0f)
         {
@@ -25,6 +35,7 @@ public class TestIdleState : BossState
     public override void Enter()
     {
         timer = idleDuration;
+        shootTimer = 0f;
 
         Debug.Log("Entered Idle State");
     }
