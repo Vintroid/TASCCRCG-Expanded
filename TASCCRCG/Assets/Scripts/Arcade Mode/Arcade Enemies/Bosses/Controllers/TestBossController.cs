@@ -4,11 +4,35 @@ using UnityEngine;
 
 public class TestBossController : BossController
 {
+    [Header("Test Boss Music")]
+    [SerializeField] private AudioClip bossMusic;
+    private AudioSource musicSource;
+    private AudioClip previousMusic;
+    private float previousMusicTime;
+
     [SerializeField] private Transform shootPoint;
 
     public override void StartFight()
     {
         base.StartFight();
+
+
+        if(Camera.main != null)
+        {
+            // Set up boss music
+            musicSource = Camera.main.GetComponent<AudioSource>();
+        }
+
+        if(musicSource != null && bossMusic != null)
+        {
+            previousMusic = musicSource.clip;
+            previousMusicTime = musicSource.time;
+
+            musicSource.Stop();
+            musicSource.clip = bossMusic;
+            musicSource.time = 0f;
+            musicSource.Play();
+        }
 
         EnterIdleState();
     }
@@ -48,6 +72,16 @@ public class TestBossController : BossController
 
     protected override void HandleDefeat()
     {
+        if(musicSource != null && previousMusic != null)
+        {
+            musicSource.Stop();
+
+            musicSource.clip = previousMusic;
+            musicSource.time = previousMusicTime;
+
+            musicSource.Play();
+        }
+
         base.HandleDefeat();
         Destroy(gameObject);
     }
