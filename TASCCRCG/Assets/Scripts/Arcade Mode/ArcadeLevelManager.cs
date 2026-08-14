@@ -17,6 +17,8 @@ public class ArcadeLevelManager : MonoBehaviour
     [Header("Boss")]
     [SerializeField] private BossEncounterController bossEncounterController;
 
+    [SerializeField] private ScrollingController scrollingController;
+
     public bool IsLevelComplete { get; private set; }
     public event System.Action OnLevelCompleted;
 
@@ -56,7 +58,13 @@ public class ArcadeLevelManager : MonoBehaviour
     {
         levelStarted = true;
 
-        while(currentWaveIndex < levelDefinition.Waves.Length)
+        // Screen start scrolling if not already
+        if (scrollingController != null)
+        {
+            scrollingController.StartScrolling();
+        }
+
+        while (currentWaveIndex < levelDefinition.Waves.Length)
         {
             WaveDefinition wave = levelDefinition.Waves[currentWaveIndex];
 

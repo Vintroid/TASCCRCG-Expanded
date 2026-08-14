@@ -7,6 +7,7 @@ public class ScrollingController : MonoBehaviour
 {
     [SerializeField] private Renderer red;
     [SerializeField] private float horizontal_speed;
+    private float scrollOffset;
 
     public bool IsScrolling { get; private set; } = true;
 
@@ -19,8 +20,9 @@ public class ScrollingController : MonoBehaviour
             return;
         }
 
-        Vector2 offset = new Vector2(Time.time * horizontal_speed, 0f);
-        red.material.mainTextureOffset = offset;
+        scrollOffset += horizontal_speed * Time.deltaTime;
+        red.material.mainTextureOffset = new Vector2(scrollOffset, 0f);
+
     }
 
     public void StopScrolling()

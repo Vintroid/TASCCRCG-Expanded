@@ -462,7 +462,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageFlashDuration: 0.1
-  maxHealth: 20
+  maxHealth: 30
   bossMusic: {fileID: 8300000, guid: 8c6d2a0baf1f55845a99be5e45661335, type: 3}
   shootPoint: {fileID: 8515858861538085200}
 --- !u!1 &7580861235389667641
