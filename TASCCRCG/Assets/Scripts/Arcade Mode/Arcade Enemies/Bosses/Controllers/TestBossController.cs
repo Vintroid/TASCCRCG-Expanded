@@ -19,7 +19,7 @@ public class TestBossController : BossController
     [SerializeField] private Transform shootPoint;
 
     // To resume sin movement after shooting
-    public float MovementTime { get; set; }
+    public float MovementPhase { get; set; }
 
     public override void StartFight()
     {

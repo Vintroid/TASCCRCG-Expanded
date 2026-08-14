@@ -20,9 +20,9 @@ public class TestMovingState : BossState
     public override void Update()
     {
         timer -= Time.deltaTime;
-        testBoss.MovementTime += Time.deltaTime;
+        testBoss.MovementPhase += moveSpeed * Time.deltaTime;
 
-        float newY = centerY + Mathf.Sin(testBoss.MovementTime * moveSpeed) * moveDistance;
+        float newY = centerY + Mathf.Sin(testBoss.MovementPhase) * moveDistance;
 
         boss.transform.position = new Vector3(
             boss.transform.position.x,
