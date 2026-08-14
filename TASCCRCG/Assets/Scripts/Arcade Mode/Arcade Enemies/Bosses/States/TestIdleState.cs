@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class TestIdleState : BossState
 {
-    public TestIdleState(BossController boss): base(boss) { }
+    private TestBossController testBoss;
+    private float timer;
+    private const float idleDuration = 2f;
+    public TestIdleState(TestBossController boss): base(boss) {
+
+        testBoss = boss;
+    }
 
     public override void Update()
     {
-        // Idle behaviour
+        timer -= Time.deltaTime;
+
+        if(timer <= 0f)
+        {
+            testBoss.EnterMovingState();
+        }
     }
 
     public override void Enter()
     {
+        timer = idleDuration;
+
         Debug.Log("Entered Idle State");
     }
 

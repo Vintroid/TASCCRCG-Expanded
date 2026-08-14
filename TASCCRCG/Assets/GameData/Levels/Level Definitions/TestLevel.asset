@@ -15,5 +15,5 @@ MonoBehaviour:
   waves:
   - {fileID: 11400000, guid: 76bbb115367e017418067d2049e08697, type: 2}
   timeBetweenWaves: 1
-  bossPrefab: {fileID: -1895639457074753095, guid: 9cc28dd99c4e70042b2fe04548f242c4, type: 3}
+  bossPrefab: {fileID: 3213335564194371724, guid: 9cc28dd99c4e70042b2fe04548f242c4, type: 3}
   nextLevel: {fileID: 11400000, guid: b5b2ee015be50fe4aaf3fd7b59113c46, type: 2}

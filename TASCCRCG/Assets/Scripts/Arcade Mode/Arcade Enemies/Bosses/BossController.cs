@@ -13,6 +13,8 @@ public class BossController : MonoBehaviour
     [SerializeField] private int maxHealth = 30;
 
     protected BossState currentState;
+    // For debugging
+    public string CurrentStateName => currentState?.GetType().Name ?? "None";
     
     public int CurrentHealth { get; private set; }
     public bool IsDefeated { get; private set; }
@@ -33,7 +35,7 @@ public class BossController : MonoBehaviour
     }
 
     // Boss fight initialization
-    public void StartFight()
+    public virtual void StartFight()
     {
         CurrentHealth = maxHealth;
         IsDefeated = false;
@@ -102,10 +104,12 @@ public class BossController : MonoBehaviour
     }
 
     // Boss can change states (patterns, behaviour, etc.)
-    private void ChangeState(BossState newState)
+    protected void ChangeState(BossState newState)
     {
         currentState?.Exit();
         currentState = newState;
         currentState?.Enter();
+
+        Debug.Log($"{name}: Current State = {CurrentStateName}");
     }
 }
