@@ -61,11 +61,17 @@ public class TestBossController : BossController
         bullet2.transform.rotation = Quaternion.Euler(0, 0, 135f);
         bullet2.Initialize(direction);
 
-        direction = (Vector3.left + Vector3.down).normalized;
-        EnemyBullet bullet3 = ProjectilePoolManager.Instance.GetProjectile(ProjectileType.Saw);
-        bullet3.transform.position = shootPoint.position;
-        bullet3.transform.rotation = Quaternion.Euler(0, 0, 225f);
-        bullet3.Initialize(direction);
+        direction = (Vector3.left + 2*Vector3.up).normalized;
+        EnemyBullet bullet4 = ProjectilePoolManager.Instance.GetProjectile(ProjectileType.Saw);
+        bullet4.transform.position = shootPoint.position;
+        bullet4.transform.rotation = Quaternion.Euler(0, 0, 112.5f);
+        bullet4.Initialize(direction);
+
+        direction = (Vector3.left + 2*Vector3.down).normalized;
+        EnemyBullet bullet5 = ProjectilePoolManager.Instance.GetProjectile(ProjectileType.Saw);
+        bullet5.transform.position = shootPoint.position;
+        bullet5.transform.rotation = Quaternion.Euler(0, 0, 247.5f);
+        bullet5.Initialize(direction);
 
 
     }

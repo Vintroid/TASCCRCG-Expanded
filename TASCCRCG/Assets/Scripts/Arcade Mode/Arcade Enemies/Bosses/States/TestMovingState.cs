@@ -12,6 +12,7 @@ public class TestMovingState : BossState
     private const float moveDuration = 3f;
     private const float moveSpeed = 2f;
     private const float moveDistance = 1.5f;
+    private float movementTime;
 
     public TestMovingState(TestBossController boss) : base(boss)
     {
@@ -21,8 +22,9 @@ public class TestMovingState : BossState
     public override void Update()
     {
         timer -= Time.deltaTime;
+        movementTime += Time.deltaTime;
 
-        float newY = startY + Mathf.Sin(Time.time * moveSpeed) * moveDistance;
+        float newY = startY + Mathf.Sin(movementTime * moveSpeed) * moveDistance;
 
         boss.transform.position = new Vector3(
             boss.transform.position.x,
@@ -40,6 +42,7 @@ public class TestMovingState : BossState
     {
         timer = moveDuration;
         startY = boss.transform.position.y;
+        movementTime = 0f;
 
         Debug.Log("Entered Moving State.");
     }
