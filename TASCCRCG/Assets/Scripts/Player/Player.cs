@@ -151,6 +151,12 @@ public abstract class Player : MonoBehaviour
 
     }
 
+    // Player stays inside hitbox continually
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        HandleInteraction(collision.gameObject);
+    }
+
     private void HandleInteraction(GameObject other)
     {
         if (TryCollectPowerUp(other))
@@ -159,12 +165,25 @@ public abstract class Player : MonoBehaviour
         }
         
         // enemy collisions (take damage)
-        if (IsDamageSource(other) && damageCooldownTimer <= 0)
+        if (IsDamageSource(other))
         {
             Debug.Log("collided with: " + other.gameObject);
-            StartCoroutine(OnHitRoutine());
+            TakeDamage();
         }
        
+    }
+
+    // Can be called from outside to damage the player
+    public void TakeDamage()
+    {
+        if(damageCooldownTimer > 0f)
+        {
+            return;
+        }
+
+        StartCoroutine(OnHitRoutine());
+        
+        
     }
     
     // Public powerup collector function. Returns if powerup collected or not.
@@ -211,7 +230,8 @@ public abstract class Player : MonoBehaviour
     // Needs to scale with new with tags that can hurt player
     private static bool IsDamageSource(GameObject other)
     {
-        return other.CompareTag("EnemyBullet") || other.GetComponent<Enemy>();
+        return other.CompareTag("EnemyBullet") || other.GetComponent<Enemy>()
+            || other.GetComponent<BossController>();
     }
 
     // blink when hit

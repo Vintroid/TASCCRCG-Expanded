@@ -15,17 +15,11 @@ public class TestBossController : BossController
     [Header("Phase Behaviour")]
     [SerializeField] private int phase1Threshold = 20;
     [SerializeField] private int phase2Threshold = 10;
-    private SpriteRenderer spriteRenderer;
 
     [SerializeField] private Transform shootPoint;
 
     // To resume sin movement after shooting
     public float MovementTime { get; set; }
-
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
 
     public override void StartFight()
     {
@@ -226,6 +220,7 @@ public class TestBossController : BossController
         if (musicSource != null && bossMusicFinalPhase != null)
         {
             musicSource.clip = bossMusicFinalPhase;
+            musicSource.Play();
         }
 
         if(spriteRenderer != null)

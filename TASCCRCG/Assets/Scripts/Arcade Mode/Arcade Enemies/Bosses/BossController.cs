@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
+    protected SpriteRenderer spriteRenderer;
     private bool isFlashing = false;
     [SerializeField] private float damageFlashDuration = 0.1f;
 
