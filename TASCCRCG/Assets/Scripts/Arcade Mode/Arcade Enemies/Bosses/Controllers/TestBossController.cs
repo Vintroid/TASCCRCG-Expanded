@@ -6,6 +6,7 @@ public class TestBossController : BossController
 {
     [Header("Test Boss Music")]
     [SerializeField] private AudioClip bossMusic;
+    [SerializeField] private AudioClip bossMusicFinalPhase;
     private AudioSource musicSource;
     private AudioClip previousMusic;
     private float previousMusicTime;
@@ -14,8 +15,17 @@ public class TestBossController : BossController
     [Header("Phase Behaviour")]
     [SerializeField] private int phase1Threshold = 20;
     [SerializeField] private int phase2Threshold = 10;
+    private SpriteRenderer spriteRenderer;
 
     [SerializeField] private Transform shootPoint;
+
+    // To resume sin movement after shooting
+    public float MovementTime { get; set; }
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     public override void StartFight()
     {
@@ -147,6 +157,7 @@ public class TestBossController : BossController
         else if(currentPhase == 2 && CurrentHealth <= phase2Threshold)
         {
             SetPhase(3);
+            SetFinalPhase();
         }
     }
 
@@ -175,16 +186,16 @@ public class TestBossController : BossController
         switch (CurrentPhase)
         {
             case 1:
-                return 2f;
+                return 1.5f;
 
             case 2:
-                return 3f;
+                return 2f;
 
             case 3:
-                return 4f;
+                return 2.5f;
 
             default:
-                return 2f;
+                return 1.5f;
                
         }
     }
@@ -207,5 +218,20 @@ public class TestBossController : BossController
                 return 3f;
         }
         
+    }
+
+    // Final Phase Music and Red Square
+    public void SetFinalPhase()
+    {
+        if (musicSource != null && bossMusicFinalPhase != null)
+        {
+            musicSource.clip = bossMusicFinalPhase;
+        }
+
+        if(spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.red;
+            transform.Find("Brow").gameObject.SetActive(true);
+        }
     }
 }
