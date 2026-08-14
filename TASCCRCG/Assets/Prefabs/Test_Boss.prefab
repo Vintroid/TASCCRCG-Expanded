@@ -463,11 +463,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageFlashDuration: 0.1
-  maxHealth: 100
+  maxHealth: 75
   bossMusic: {fileID: 8300000, guid: e9bafe161814dc84cb35b64574ebfdac, type: 3}
   bossMusicFinalPhase: {fileID: 8300000, guid: fe09ad5794ecdb44e830b91345649cfe, type: 3}
-  phase1Threshold: 66
-  phase2Threshold: 33
+  phase1Threshold: 50
+  phase2Threshold: 25
   shootPoint: {fileID: 8515858861538085200}
 --- !u!1 &6537490768564322016
 GameObject:
