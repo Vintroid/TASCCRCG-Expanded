@@ -14,6 +14,9 @@ public class BossController : MonoBehaviour
 
     public event System.Action<BossController> OnBossDefeated;
 
+    protected int currentPhase = 1;
+    public int CurrentPhase => currentPhase;
+
     protected BossState currentState;
     // For debugging
     public string CurrentStateName => currentState?.GetType().Name ?? "None";
@@ -65,7 +68,22 @@ public class BossController : MonoBehaviour
         {
             StartCoroutine(DamageFlashCoroutine());
         }
+
+        OnHealthChanged();
     }
+
+    // Can be expanded to account for phase changes for example.
+    protected virtual void OnHealthChanged()
+    {
+
+    }
+
+    // Bosses expand on phase change behaviour
+    protected virtual void OnPhaseChanged()
+    {
+
+    }
+
 
     // Boss beaten cleanup
     public void DefeatBoss()
@@ -127,4 +145,14 @@ public class BossController : MonoBehaviour
     {
 
     }
+
+    protected void SetPhase(int newPhase)
+    {
+        currentPhase = newPhase;
+
+        Debug.Log($"{name}: Entered Phase {currentPhase}");
+
+        OnPhaseChanged();
+    }
+
 }

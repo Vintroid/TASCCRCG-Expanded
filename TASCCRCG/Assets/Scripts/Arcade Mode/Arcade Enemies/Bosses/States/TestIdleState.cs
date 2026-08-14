@@ -7,8 +7,8 @@ public class TestIdleState : BossState
     private TestBossController testBoss;
     private float timer;
     private float shootTimer;
-    private const float idleDuration = 4f;
-    private const float shootInterval = 0.5f;
+    private float idleDuration = 4f;
+    private float shootInterval = 0.5f;
 
     public TestIdleState(TestBossController boss): base(boss) {
 
@@ -36,6 +36,7 @@ public class TestIdleState : BossState
     {
         timer = idleDuration;
         shootTimer = 0f;
+        shootInterval = testBoss.SetShootingInterval();
 
         Debug.Log("Entered Idle State");
     }
@@ -44,4 +45,5 @@ public class TestIdleState : BossState
     {
         Debug.Log("Exited Idle state");
     }
+
 }

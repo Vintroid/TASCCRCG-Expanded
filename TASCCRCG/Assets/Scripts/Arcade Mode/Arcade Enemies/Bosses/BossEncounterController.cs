@@ -22,6 +22,7 @@ public class BossEncounterController : MonoBehaviour
 
     [Header("Timing")]
     [SerializeField] private float delayBeforeBoss = 2f;
+    [SerializeField] private float delayBeforeBossAttack = 1f;
 
 
     public bool IsEncounterRunning { get; private set; }
@@ -80,8 +81,11 @@ public class BossEncounterController : MonoBehaviour
         // Boss entrace. code stop until coroutine is over.
         yield return StartCoroutine(MoveBossIntoPosition());
 
+        // Pause before boss attacks
+        yield return new WaitForSeconds(delayBeforeBossAttack);
+
         // Players can move again
-        if(player1 != null)
+        if (player1 != null)
         {
             player1.EndBossIntroPositioning();
         }

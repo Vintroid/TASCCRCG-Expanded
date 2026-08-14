@@ -9,9 +9,9 @@ public class TestMovingState : BossState
     private float timer;
     private float startY;
 
-    private const float moveDuration = 3f;
-    private const float moveSpeed = 2f;
-    private const float moveDistance = 1.5f;
+    private float moveDuration = 3f;
+    private float moveSpeed = 2f;
+    private float moveDistance = 1.5f;
     private float movementTime;
 
     public TestMovingState(TestBossController boss) : base(boss)
@@ -40,9 +40,13 @@ public class TestMovingState : BossState
 
     public override void Enter()
     {
+        moveDuration = testBoss.SetMovementDuration();
+
         timer = moveDuration;
         startY = boss.transform.position.y;
         movementTime = 0f;
+
+        moveSpeed = testBoss.SetMovementSpeed();
 
         Debug.Log("Entered Moving State.");
     }
